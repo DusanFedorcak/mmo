@@ -28,6 +28,7 @@ config/icon="res://icon.png"
 
 Network="*res://Network.gd"
 Log="*res://Log.gd"
+EventBus="*res://EventBus.gd"
 
 [display]
 

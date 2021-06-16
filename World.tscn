@@ -127,12 +127,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="UI/Console"]
+[node name="Output" type="RichTextLabel" parent="UI/Console"]
 margin_right = 296.0
 margin_bottom = 185.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/normal = ExtResource( 3 )
+text = "Welcome..."
+scroll_following = true
 
 [connection signal="pressed" from="UI/Menu/VBox/HBox/Randomize" to="UI" method="_on_Randomize_pressed"]
 [connection signal="pressed" from="UI/Menu/VBox/StartServer" to="UI" method="_on_StartServer_pressed"]
