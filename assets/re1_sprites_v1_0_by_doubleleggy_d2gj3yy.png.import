@@ -1,0 +1,34 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+path="res://.import/re1_sprites_v1_0_by_doubleleggy_d2gj3yy.png-5f3cffee16077fe1327c9d99e23f0f6d.stex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://assets/re1_sprites_v1_0_by_doubleleggy_d2gj3yy.png"
+dest_files=[ "res://.import/re1_sprites_v1_0_by_doubleleggy_d2gj3yy.png-5f3cffee16077fe1327c9d99e23f0f6d.stex" ]
+
+[params]
+
+compress/mode=0
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/bptc_ldr=0
+compress/normal_map=0
+flags/repeat=0
+flags/filter=true
+flags/mipmaps=false
+flags/anisotropic=false
+flags/srgb=2
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
+stream=false
+size_limit=0
+detect_3d=true
+svg/scale=1.0
