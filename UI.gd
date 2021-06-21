@@ -39,14 +39,23 @@ func _on_Exit_pressed():
 
 
 func _unhandled_input(_event):
-
 	if Input.is_action_just_pressed("ui_cancel"):
 		$Menu.visible = not $Menu.visible
 
-
-	if world_node.player:
+	if Network.is_connected:
 		if Input.is_mouse_button_pressed(BUTTON_LEFT):
-			world_node.try_move_player(world_node.get_global_mouse_position())		
+			rpc_id(1, "receive_command", {
+					name = "MOVE",
+					position = world_node.get_global_mouse_position()
+				}
+			)	
+			
+
+remote func receive_command(command):
+	var id = get_tree().get_rpc_sender_id()
+	var player = world_node.get_character(id)
+	if player:
+		player.get_node("AI").receive_command(command)
 
 
 func _on_StartServer_pressed():

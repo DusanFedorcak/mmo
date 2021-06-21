@@ -4,6 +4,7 @@ extends Node
 const MAX_PLAYERS = 32
 
 
+var is_connected = false
 var is_server = false
 var player_info = {}
 var my_info = null
@@ -23,7 +24,8 @@ func _player_disconnected(id):
 
 
 func _connected_ok():	
-	Log.info("Connected to server.")	
+	Log.info("Connected to server.")
+	is_connected = true
 	rpc_id(1, "register_player", my_info)
 	pass
 
