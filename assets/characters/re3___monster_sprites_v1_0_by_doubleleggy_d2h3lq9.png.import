@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/re3___monster_sprites_v1_0_by_doubleleggy_d2h3lq9.png-8eeadbb44914a1bdd4a4b6fd3de2c2d3.stex"
+path="res://.import/re3___monster_sprites_v1_0_by_doubleleggy_d2h3lq9.png-d98f25f3b91472dcfc704f03c68cde2c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/re3___monster_sprites_v1_0_by_doubleleggy_d2h3lq9.png"
-dest_files=[ "res://.import/re3___monster_sprites_v1_0_by_doubleleggy_d2h3lq9.png-8eeadbb44914a1bdd4a4b6fd3de2c2d3.stex" ]
+source_file="res://assets/characters/re3___monster_sprites_v1_0_by_doubleleggy_d2h3lq9.png"
+dest_files=[ "res://.import/re3___monster_sprites_v1_0_by_doubleleggy_d2h3lq9.png-d98f25f3b91472dcfc704f03c68cde2c.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

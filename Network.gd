@@ -44,7 +44,7 @@ remote func register_player(info):
 	var id = get_tree().get_rpc_sender_id()
 	player_info[id] = info
 	Log.info("Registering player %d as %s." % [id, info])
-	EventBus.emit_signal("player_added", id)	
+	EventBus.emit_signal("player_added", id, info)	
 
 
 func create_server(port):		
@@ -58,10 +58,14 @@ func create_server(port):
 	is_server = true
 	
 	
-func connect_server(player_name, address, port):
+func connect_server(player_name, player_template, address, port):
 	Log.info("Joining server %s:%d ..." % [address, port])
 	
-	my_info = player_name
+	my_info = {
+		name = player_name,
+		template = player_template		
+	}
+	
 	get_tree().connect("connected_to_server", self, "_connected_ok")
 	get_tree().connect("connection_failed", self, "_connected_fail")
 	get_tree().connect("server_disconnected", self, "_server_disconnected")

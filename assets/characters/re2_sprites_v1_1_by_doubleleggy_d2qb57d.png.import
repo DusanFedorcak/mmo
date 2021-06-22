@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/visoes_3_sprites_by_doubleleggy_d2l91ct.png-1017856a573d1b5744eb81d08c0305e2.stex"
+path="res://.import/re2_sprites_v1_1_by_doubleleggy_d2qb57d.png-317d6154944d8c306a92c0659b81020f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/visoes_3_sprites_by_doubleleggy_d2l91ct.png"
-dest_files=[ "res://.import/visoes_3_sprites_by_doubleleggy_d2l91ct.png-1017856a573d1b5744eb81d08c0305e2.stex" ]
+source_file="res://assets/characters/re2_sprites_v1_1_by_doubleleggy_d2qb57d.png"
+dest_files=[ "res://.import/re2_sprites_v1_1_by_doubleleggy_d2qb57d.png-317d6154944d8c306a92c0659b81020f.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

@@ -3,30 +3,22 @@ extends CanvasLayer
 
 onready var world_node = $".."
 var is_server = false
-var names = null
+var player_template = 0
 
 const MAX_PLAYERS = 32
-
-
-func _read_names():
-	var names = []
-	var f = File.new()
-	f.open("res://assets/names.txt", File.READ)
-	while not f.eof_reached():
-		names.append(f.get_line())
-	return names
-
-
-func get_random_name():
-	if not names:
-		names = _read_names()
-	return names[randi() % len(names)]
+	
+	
+func _update_player_template():
+	$Menu/VBox/PlayerSelection/Appearance.texture = (
+		Assets.character_sprites[player_template].get_frame("walk_down", 0)
+	)
 
 
 func _ready():
-	randomize()
 	Log.register_target(self)
-	$Menu/VBox/HBox/PlayerName.text = get_random_name()
+	$Menu/VBox/HBox/PlayerName.text = Assets.get_random_name()
+	player_template = randi() % len(Assets.character_sprites)	
+	_update_player_template()
 
 
 func parse_server_address():
@@ -42,13 +34,13 @@ func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		$Menu.visible = not $Menu.visible
 
-	if Network.is_connected:
-		if Input.is_mouse_button_pressed(BUTTON_LEFT):
+	if Network.is_connected and world_node.player:
+		if Input.is_mouse_button_pressed(BUTTON_LEFT):			
 			rpc_id(1, "receive_command", {
 					name = "MOVE",
 					position = world_node.get_global_mouse_position()
 				}
-			)	
+			)
 			
 
 remote func receive_command(command):
@@ -74,7 +66,9 @@ func _on_JoinGame_pressed():
 		$Menu.visible = false
 
 		var server_info = parse_server_address()
-		Network.connect_server($Menu/VBox/HBox/PlayerName.text, server_info.address, server_info.port)
+		Network.connect_server(
+			$Menu/VBox/HBox/PlayerName.text, player_template, server_info.address, server_info.port
+		)
 
 
 func log_message(message):
@@ -82,4 +76,19 @@ func log_message(message):
 
 
 func _on_Randomize_pressed():
-	$Menu/VBox/HBox/PlayerName.text = get_random_name()
+	$Menu/VBox/HBox/PlayerName.text = Assets.get_random_name()
+
+
+func _on_PreviousChar_pressed():
+	player_template = (player_template - 1) % len(Assets.character_sprites)
+	_update_player_template()
+
+
+func _on_NextChar_pressed():
+	player_template = (player_template + 1) % len(Assets.character_sprites)
+	_update_player_template()
+
+
+func _on_RandomizeTemplate_pressed():
+	player_template = randi() % len(Assets.character_sprites)	
+	_update_player_template()
