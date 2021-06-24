@@ -33,15 +33,22 @@ func _on_Exit_pressed():
 func _unhandled_input(_event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		$Menu.visible = not $Menu.visible
+		
+	if Input.is_action_just_pressed("ui_fullscreen"):
+		OS.window_fullscreen = not OS.window_fullscreen
 
 	if Network.is_connected and world_node.player:
 		if Input.is_mouse_button_pressed(BUTTON_LEFT):			
-			rpc_id(1, "receive_command", {
-					name = "MOVE",
-					position = world_node.get_global_mouse_position()
-				}
-			)
-			
+			var command = {
+				name = "MOVE",
+				position = world_node.get_global_mouse_position()
+			}
+						
+			#for local play
+			if world_node.player.id == 1:
+				world_node.player.get_node("AI").receive_command(command)
+			else:
+				rpc_id(1, "receive_command", command)
 
 remote func receive_command(command):
 	var id = get_tree().get_rpc_sender_id()
@@ -54,6 +61,7 @@ func _on_StartServer_pressed():
 	if not world_node.player:		
 		$Menu/VBox/JoinGame.disabled = true
 		$Menu/VBox/StartServer.disabled = true
+		$Menu/VBox/Localgame.disabled = true
 		$Menu.visible = false
 		Network.create_server(parse_server_address().port)
 		world_node.setup_server()
@@ -63,6 +71,7 @@ func _on_JoinGame_pressed():
 	if not world_node.player:		
 		$Menu/VBox/JoinGame.disabled = true
 		$Menu/VBox/StartServer.disabled = true
+		$Menu/VBox/Localgame.disabled = true
 		$Menu.visible = false
 
 		var server_info = parse_server_address()
@@ -92,3 +101,21 @@ func _on_NextChar_pressed():
 func _on_RandomizeTemplate_pressed():
 	player_template = randi() % len(Assets.character_sprites)	
 	_update_player_template()
+
+
+func _on_Localgame_pressed():
+	if not world_node.player:		
+		$Menu/VBox/JoinGame.disabled = true
+		$Menu/VBox/StartServer.disabled = true
+		$Menu/VBox/Localgame.disabled = true
+		$Menu.visible = false
+
+		var server_info = parse_server_address()
+		Network.create_server(parse_server_address().port)
+		world_node.setup_server()
+		EventBus.emit_signal("player_added", 1, { 
+			name = $Menu/VBox/HBox/PlayerName.text,
+			template = player_template
+		})
+		
+		

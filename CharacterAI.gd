@@ -4,15 +4,17 @@ var waypoint_offset = 0.0
 var path = null
 
 onready var body = get_parent()
-onready var navigation: Navigation2D = $"../../../Navigation"
+onready var navigation: MyNavigation = $"../../../Navigation"
 		
 		
 func receive_command(command):
 	match command.name:
-		"MOVE":			
-			path = navigation.get_simple_path(body.position, command.position, false)		
+		"MOVE":						
+			path = navigation.get_simple_path(body.position, command.position)				
 			body.state = Character.State.MOVING
 			body.get_node("WorldIcons/Target").position = command.position
+			var path_line = body.get_node("WorldIcons/Path")			
+			path_line.points = path
 		_:
 			pass
 		

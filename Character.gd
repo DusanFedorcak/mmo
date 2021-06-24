@@ -52,6 +52,7 @@ func _process(delta):
 	if not is_puppet:
 		$AI.tick()
 		$WorldIcons/Target.visible = state == State.MOVING
+		$WorldIcons/Path.visible = state == State.MOVING
 		
 	_update_animation()
 	$WorldIcons.position = -position	
@@ -76,14 +77,11 @@ func _update_animation():
 
 
 func dump_state():
-	return {		
-		id = id,	
-		name = char_name,
-		template = template,
+	return {					
 		state = state,
-		position = self.position,
 		motion_direction = motion_direction,
 		runing = running,
+		position = self.position,		
 	}
 
 

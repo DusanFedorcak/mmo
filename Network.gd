@@ -56,6 +56,7 @@ func create_server(port):
 	peer.create_server(port, MAX_PLAYERS)	
 	get_tree().network_peer = peer
 	is_server = true
+	is_connected = true
 	
 	
 func connect_server(player_name, player_template, address, port):
