@@ -46,15 +46,16 @@ func _unhandled_input(_event):
 						
 			#for local play
 			if world_node.player.id == 1:
-				world_node.player.get_node("AI").receive_command(command)
+				world_node.player.get_node("Controls").receive_command(command)
 			else:
 				rpc_id(1, "receive_command", command)
+				
 
 remote func receive_command(command):
 	var id = get_tree().get_rpc_sender_id()
 	var player = world_node.get_character(id)
 	if player:
-		player.get_node("AI").receive_command(command)
+		player.get_node("Controls").receive_command(command)
 
 
 func _on_StartServer_pressed():

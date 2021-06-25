@@ -19,6 +19,10 @@ func get_random_name():
 	return names[randi() % len(names)]
 	
 
+func get_random_character_template():
+	return randi() % len(character_sprites)
+	
+
 func _read_names():
 	var names = []
 	var f = File.new()

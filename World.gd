@@ -8,8 +8,18 @@ var player = null
 
 func setup_server():
 	EventBus.connect("player_added", self, "_on_player_added")	
-	$Map/Navigation.init_navigation($Map/Terrain, $Map/Roads)
-	#$Map/Navigation.update_mesh($Map/TileMap)
+	$Map/Navigation.init_navigation($Map/Terrain, $Map/Roads, $Map/Obstacles)
+	
+	for i in range(20):
+		var character = add_character(
+			-i, 
+			Assets.get_random_name(), 
+			Assets.get_random_character_template(),
+			$Map/Navigation.get_random_empty_cell(), 
+			false
+		)
+		character.get_node("Controls/AI").enabled = true
+		
 	
 	
 func _on_player_added(id, info):	
@@ -19,7 +29,8 @@ func _on_player_added(id, info):
 		rpc_id(id, "add_character", existing.id, existing.char_name, existing.template, existing.position, true)	
 	
 	# add to server
-	var character = add_character(id, info["name"], info["template"], Vector2(500, 300), false)
+	var character = add_character(
+		id, info["name"], info["template"], $Map/Navigation.get_closest_empty_cell(Vector2(500, 300)), false)
 	
 	# add new one to all clients
 	rpc("add_character", id, character.char_name, character.template, character.position, true)	

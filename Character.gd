@@ -50,7 +50,7 @@ func _physics_process(delta):
 	
 func _process(delta):
 	if not is_puppet:
-		$AI.tick()
+		$Controls.tick()
 		$WorldIcons/Target.visible = state == State.MOVING
 		$WorldIcons/Path.visible = state == State.MOVING
 		
