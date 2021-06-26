@@ -1,9 +1,8 @@
 extends Node
 
 
-onready var body: Character = $"../../"
-onready var body_controls: CharacterControls = get_parent()
-onready var navigation: MyNavigation = $"../../../../Navigation"
+onready var body: Character = get_parent()
+onready var body_controls: CharacterControls = $"../Controls"
 
 var enabled = false
 
@@ -13,8 +12,8 @@ func _ready():
 
 func tick():
 	if enabled:
-		if body.state == Character.State.IDLE:
+		if body.state == Character.State.IDLE and randf() < 0.01:
 			body_controls.receive_command({
 				name = "MOVE",
-				position = navigation.get_random_empty_cell(),
+				position =  Globals.world.get_node("Map/Navigation").get_random_empty_cell(),
 			})

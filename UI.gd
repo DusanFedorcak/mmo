@@ -38,17 +38,27 @@ func _unhandled_input(_event):
 		OS.window_fullscreen = not OS.window_fullscreen
 
 	if Network.is_connected and world_node.player:
+		var command = null
+		
 		if Input.is_mouse_button_pressed(BUTTON_LEFT):			
-			var command = {
+			command = {
 				name = "MOVE",
 				position = world_node.get_global_mouse_position()
 			}
+			
+		if Input.is_mouse_button_pressed(BUTTON_RIGHT):			
+			command = {
+				name = "TURN_TO",
+				position = world_node.get_global_mouse_position()
+			}
 						
+		if command:						
 			#for local play
 			if world_node.player.id == 1:
 				world_node.player.get_node("Controls").receive_command(command)
 			else:
 				rpc_id(1, "receive_command", command)
+		
 				
 
 remote func receive_command(command):

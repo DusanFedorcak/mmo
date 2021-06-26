@@ -1,42 +1,52 @@
 extends Node
 class_name CharacterControls
 
-var waypoint_offset = 0.0
+var waypoint_offset = 16.0
 var path = null
 
-onready var body = get_parent()
-onready var navigation: MyNavigation = $"../../../Navigation"
+onready var body: Character = get_parent()
+onready var sensors: CharacterSensors = get_node("../Sensors")
 		
 		
 func receive_command(command):
 	match command.name:
 		"MOVE":						
-			path = navigation.get_simple_path(body.position, command.position)				
+			path = Globals.world.get_node("Map/Navigation").get_simple_path(body.position, command.position)				
 			body.state = Character.State.MOVING
 			body.get_node("WorldIcons/Target").position = command.position
 			var path_line = body.get_node("WorldIcons/Path")			
 			path_line.points = path
+		"TURN_TO":
+			
+			body.state = Character.State.IDLE
+			body.facing_direction = (command.position - body.position).normalized()			
 		_:
 			pass
 		
 		
-func tick():
-	$AI.tick()
-	
+func tick():	
 	match body.state:
 		Character.State.IDLE:
 			pass
 		Character.State.MOVING:
 			var waypoint = _get_nearest_waypoint()
 			if waypoint:
-				body.set_motion(waypoint - body.position, true)
-			else:		
-				body.set_motion(Vector2.ZERO)
+				var direction = (waypoint - body.position).normalized()
+				var to_near_people = sensors.get_most_crowded_direction()
+				var dot = direction.dot(to_near_people)
+				if dot > 0:
+					direction += to_near_people.rotated(PI * 0.5) * dot
+				body.set_motion(direction, true)
+				body.facing_direction = body.motion_direction
+			else:						
 				body.state = Character.State.IDLE
+				body.set_motion(Vector2.ZERO)		
+	
 				
 				
 func _ready():
-	waypoint_offset = $"../CollisionShape".shape.radius
+	pass
+	#waypoint_offset = $"../CollisionShape".shape.radius
 	
 		
 func _get_nearest_waypoint():
@@ -51,4 +61,4 @@ func _get_nearest_waypoint():
 
 					return null
 	else:
-		return null
+		return null	

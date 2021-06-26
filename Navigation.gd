@@ -1,5 +1,5 @@
 extends Node2D
-class_name MyNavigation
+class_name MapNavigation
 
 var a_star: AStar2D = null
 var cell_size = null
@@ -9,20 +9,20 @@ func _ready():
 	pass
 
 
-func init_navigation(tilemap: TileMap, roads: TileMap, obstacles: TileMap):			
+func init_navigation(terrain: TileMap, roads: TileMap, obstacles: TileMap):			
 	
-	map_dim = tilemap.get_used_rect()
-	cell_size = tilemap.cell_size
+	map_dim = terrain.get_used_rect()
+	cell_size = terrain.cell_size
 	
 	var access_map = {}
 	
-	# collect all terrain tiles from the tilemap that has navpoly
+	# collect all terrain tiles from the terrain that has navpoly
 	# (mere existence of navpoly means it can be navigated through)
-	for cell_pos in tilemap.get_used_cells():		
-		var cell_index = tilemap.get_cell(cell_pos.x, cell_pos.y)			
-		var sub_tile_coords = tilemap.get_cell_autotile_coord(cell_pos.x, cell_pos.y)		
-		var nav_poly = tilemap.tile_set.autotile_get_navigation_polygon(cell_index, sub_tile_coords)
-		var cell_origin = tilemap.map_to_world(cell_pos)
+	for cell_pos in terrain.get_used_cells():		
+		var cell_index = terrain.get_cell(cell_pos.x, cell_pos.y)			
+		var sub_tile_coords = terrain.get_cell_autotile_coord(cell_pos.x, cell_pos.y)		
+		var nav_poly = terrain.tile_set.autotile_get_navigation_polygon(cell_index, sub_tile_coords)
+		var cell_origin = terrain.map_to_world(cell_pos)
 		if nav_poly:
 			access_map[cell_pos] = 2.0
 	
@@ -47,7 +47,7 @@ func init_navigation(tilemap: TileMap, roads: TileMap, obstacles: TileMap):
 	
 	# fill A-star with points
 	for p in access_map:
-		a_star.add_point(_get_point_id(p, map_dim), p * tilemap.cell_size, access_map[p])
+		a_star.add_point(_get_point_id(p, map_dim), p * cell_size, access_map[p])
 		
 	for p in access_map:
 		# connect 4-neighbourhour

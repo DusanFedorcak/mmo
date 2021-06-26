@@ -1,9 +1,14 @@
 extends Node2D
+class_name WorldNode
 
 const CharacterScene = preload("res://Character.tscn")
 
 
 var player = null
+
+
+func _ready():
+	Globals.world = self
 
 
 func setup_server():
@@ -18,15 +23,16 @@ func setup_server():
 			$Map/Navigation.get_random_empty_cell(), 
 			false
 		)
-		character.get_node("Controls/AI").enabled = true
+		character.get_node("AI").enabled = true
 		
 	
 	
 func _on_player_added(id, info):	
 	
 	# add existing to the new player
-	for existing in $Map/Characters.get_children():
-		rpc_id(id, "add_character", existing.id, existing.char_name, existing.template, existing.position, true)	
+	if id != 1:
+		for existing in $Map/Characters.get_children():
+			rpc_id(id, "add_character", existing.id, existing.char_name, existing.template, existing.position, true)	
 	
 	# add to server
 	var character = add_character(
@@ -48,6 +54,7 @@ remote func add_character(char_id, name, template, position, is_puppet):
 	$Map/Characters.add_child(character)	
 	if char_id == get_tree().get_network_unique_id():
 		player = character
+		#player.get_node("Sensors").show_senses = true
 	return character
 
 	

@@ -20,14 +20,26 @@ _global_script_classes=[ {
 "path": "res://CharacterControls.gd"
 }, {
 "base": "Node2D",
-"class": "MyNavigation",
+"class": "CharacterSensors",
+"language": "GDScript",
+"path": "res://CharacterSensors.gd"
+}, {
+"base": "Node2D",
+"class": "MapNavigation",
 "language": "GDScript",
 "path": "res://Navigation.gd"
+}, {
+"base": "Node2D",
+"class": "WorldNode",
+"language": "GDScript",
+"path": "res://World.gd"
 } ]
 _global_script_class_icons={
 "Character": "",
 "CharacterControls": "",
-"MyNavigation": ""
+"CharacterSensors": "",
+"MapNavigation": "",
+"WorldNode": ""
 }
 
 [application]
@@ -42,6 +54,7 @@ Log="*res://Log.gd"
 EventBus="*res://EventBus.gd"
 Network="*res://Network.gd"
 Assets="*res://Assets.gd"
+Globals="*res://Globals.gd"
 
 [display]
 
