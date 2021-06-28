@@ -1,7 +1,9 @@
 extends Node
 class_name CharacterControls
 
-var waypoint_offset = 16.0
+var WAYPOINT_OFFSET = 16.0
+var AVOID_MULTIPLIER = 5.0
+
 var path = null
 
 onready var body: Character = get_parent()
@@ -32,27 +34,29 @@ func tick():
 			var waypoint = _get_nearest_waypoint()
 			if waypoint:
 				var direction = (waypoint - body.position).normalized()
-				var to_near_people = sensors.get_most_crowded_direction()
-				var dot = direction.dot(to_near_people)
-				if dot > 0:
-					direction += to_near_people.rotated(PI * 0.5) * dot
+				direction = _avoid_crowded(direction, AVOID_MULTIPLIER)
 				body.set_motion(direction, true)
 				body.facing_direction = body.motion_direction
 			else:						
 				body.state = Character.State.IDLE
 				body.set_motion(Vector2.ZERO)		
 	
-				
+
+func _avoid_crowded(direction, avoid_multiplier):
+	var to_near_people = sensors.get_most_crowded_direction()
+	var dot = direction.dot(to_near_people)
+	if dot > 0:
+		direction += to_near_people.rotated(PI * 0.5) * dot * avoid_multiplier
+	return direction
 				
 func _ready():
-	pass
-	#waypoint_offset = $"../CollisionShape".shape.radius
+	pass	
 	
 		
 func _get_nearest_waypoint():
 	if path:
 		while true:
-			if (body.position - path[0]).length_squared() > waypoint_offset * waypoint_offset:
+			if (body.position - path[0]).length_squared() > WAYPOINT_OFFSET * WAYPOINT_OFFSET:
 				return path[0]
 			else:
 				path.remove(0)

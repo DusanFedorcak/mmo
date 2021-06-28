@@ -132,7 +132,7 @@ func _try_connect_points(p: Vector2, dir: Vector2, access_map: Dictionary, a_sta
 	
 
 func _get_point_id(point: Vector2, map_dim: Rect2) -> int:
-	return int(point.y * map_dim.size.x + point.x)
+	return int((point.y - map_dim.position.y) * map_dim.size.x + point.x - map_dim.position.x)
 					
 					
 func _update_nav_map(map: Dictionary, cell_size: Vector2, map_dim: Vector2):

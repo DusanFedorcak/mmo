@@ -8,7 +8,7 @@ var player = null
 
 
 func _ready():
-	Globals.world = self
+	Globals.world = self	
 
 
 func setup_server():
@@ -53,8 +53,7 @@ remote func add_character(char_id, name, template, position, is_puppet):
 	character.position = position		
 	$Map/Characters.add_child(character)	
 	if char_id == get_tree().get_network_unique_id():
-		player = character
-		#player.get_node("Sensors").show_senses = true
+		player = character		
 	return character
 
 	
@@ -65,6 +64,9 @@ func _process(delta):
 			game_state[char_node.id] = char_node.dump_state()
 			
 		rpc_unreliable("update_game", game_state)
+		
+	if player:
+		$PlayerCamera.position = player.position
 		
 		
 func get_character(char_id):

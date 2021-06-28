@@ -6,10 +6,10 @@
 [ext_resource path="res://CharacterAI.gd" type="Script" id=4]
 [ext_resource path="res://CharacterSensors.gd" type="Script" id=5]
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="CircleShape2D" id=1]
 radius = 200.0
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id=2]
 radius = 4.0
 
 [node name="Character" type="KinematicBody2D"]
@@ -24,7 +24,7 @@ monitorable = false
 collision_layer = 0
 
 [node name="Circle" type="CollisionShape2D" parent="Sensors/Sight"]
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="Controls" type="Node" parent="."]
 script = ExtResource( 3 )
@@ -33,7 +33,7 @@ script = ExtResource( 3 )
 script = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="Shape" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -16 )
