@@ -19,6 +19,12 @@ func _ready():
 	$Menu/VBox/HBox/PlayerName.text = Assets.get_random_name()
 	player_template = randi() % len(Assets.character_sprites)	
 	_update_player_template()
+	$Menu.visible = true
+
+
+func _process(delta):
+	if delta != 0:
+		$Fps.text = str(int(1.0 / delta))	
 
 
 func parse_server_address():
@@ -36,36 +42,45 @@ func _unhandled_input(_event):
 		
 	if Input.is_action_just_pressed("ui_fullscreen"):
 		OS.window_fullscreen = not OS.window_fullscreen
-
+		
+	
 	if Network.is_connected and world_node.player:
-		var command = null
+		var commands = []
 		
 		if Input.is_mouse_button_pressed(BUTTON_LEFT):			
-			command = {
+			commands.append({
 				name = "MOVE",
 				position = world_node.get_global_mouse_position()
-			}
+			})
 			
 		if Input.is_mouse_button_pressed(BUTTON_RIGHT):			
-			command = {
+			commands.append({
 				name = "TURN_TO",
 				position = world_node.get_global_mouse_position()
-			}
+			})
+			
+			if world_node.player.current_item:
+				commands.append({
+					name = "USE",
+				})
+			
+		if Input.is_action_just_pressed("ui_select"):
+			if not world_node.player.current_item:
+				commands.append({
+					name = "EQUIP",
+					item_name = "Gun"
+				})
+			else:
+				commands.append({
+					name = "UNEQUIP",
+				})
 						
-		if command:						
+		for command in commands:				
 			#for local play
 			if world_node.player.id == 1:
 				world_node.player.get_node("Controls").receive_command(command)
 			else:
-				rpc_id(1, "receive_command", command)
-		
-				
-
-remote func receive_command(command):
-	var id = get_tree().get_rpc_sender_id()
-	var player = world_node.get_character(id)
-	if player:
-		player.get_node("Controls").receive_command(command)
+				world_node.rpc_id(1, "receive_command", command)
 
 
 func _on_StartServer_pressed():

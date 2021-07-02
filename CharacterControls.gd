@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 class_name CharacterControls
 
 var WAYPOINT_OFFSET = 16.0
@@ -15,15 +15,26 @@ func receive_command(command):
 		"MOVE":						
 			path = Globals.world.get_node("Map/Navigation").get_simple_path(body.position, command.position)				
 			body.state = Character.State.MOVING
-			body.get_node("WorldIcons/Target").position = command.position
-			var path_line = body.get_node("WorldIcons/Path")			
-			path_line.points = path
-		"TURN_TO":
-			
+			$WorldIcons/Target.position = command.position
+			$WorldIcons/Path.points = path			
+		"TURN_TO":						
 			body.state = Character.State.IDLE
-			body.facing_direction = (command.position - body.position).normalized()			
+			body.facing_direction = (command.position - body.position).normalized()
+		"SAY":
+			body.rpc("say", command.text)
+		"EQUIP":
+			body.rpc("equip", command.item_name)
+		"UNEQUIP":
+			body.rpc("equip", null)
+		"USE":			
+			if body.current_item:
+				body.current_item.use(body)
 		_:
 			pass
+			
+			
+func _process(delta):
+	$WorldIcons.position = -body.position
 		
 		
 func tick():	

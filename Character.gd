@@ -1,12 +1,23 @@
 extends KinematicBody2D
 class_name Character
 
+const AI_TICK = 0.1
+var ai_accum = 0
+
 var is_puppet = false
 
 var id = -1
 var char_name = "Name" setget set_char_name
 var template = 0
+
+var health = 1
+
+
+signal hit(gun)
+
+
 var animation = null
+var color = Color.black
 
 
 enum State {
@@ -25,6 +36,8 @@ var motion_direction: Vector2 = Vector2.ZERO
 var running = false
 
 
+var current_item = null
+
 func set_char_name(n):
 	char_name = n
 	$Icons/Name.text = char_name
@@ -36,7 +49,11 @@ func set_motion(direction, _running=false):
 	
 
 func _ready():		
-	$CollisionShape.disabled = is_puppet	
+	$CollisionShape.disabled = is_puppet
+	$Icons/Speaking.visible = false
+	color = Assets.get_random_color()
+	$Icons/Speaking.modulate = color
+	connect("hit", self, "_on_hit")
 	
 	
 func _physics_process(delta):
@@ -51,19 +68,18 @@ func _physics_process(delta):
 	
 func _process(delta):
 	if not is_puppet:
-		# OPTIMIZE TICK FREQUENCY!
-		$Sensors.tick()
-		$AI.tick()		
-		$Controls.tick()
-		$WorldIcons/Target.visible = state == State.MOVING
-		$WorldIcons/Path.visible = state == State.MOVING
+		ai_accum += delta
+		while ai_accum > AI_TICK:				
+			$Sensors.tick()
+			$AI.tick()		
+			$Controls.tick()
+			ai_accum -= AI_TICK		
 		
-	_update_animation()
-	$WorldIcons.position = -position	
+	_update_animation()	
 	
 	
-func resolve_animation(direction: Vector2):	
-	var animation = null	
+func _resolve_animation(direction: Vector2):	
+	var animation = "down"	
 	if abs(direction.x) > 0.0:
 		animation = "right" if direction.x > 0.0 else "left"
 	if abs(direction.y) > abs(direction.x):
@@ -71,18 +87,18 @@ func resolve_animation(direction: Vector2):
 
 	return animation
 
+
 func _update_animation():	
 	match state:
 		State.MOVING:
-			animation = resolve_animation(motion_direction)
+			animation = _resolve_animation(motion_direction)
 			$Shape.speed_scale = 2.0 if running else 1.5
 			$Shape.play("walk_" + animation)
 		State.IDLE:			
-			animation = resolve_animation(facing_direction)
+			animation = _resolve_animation(facing_direction)
 			$Shape.play("walk_" + animation)
 			$Shape.stop()		
 			
-
 
 func dump_state():
 	return {					
@@ -100,3 +116,38 @@ func update_state(_state):
 	motion_direction = _state.motion_direction
 	running = _state.runing
 	position = _state.position
+
+
+remotesync func say(text):
+	$Icons/Speaking.text = text
+	$Icons/Speaking.visible = true
+	$Icons/Speaking/SpeakingTimer.wait_time = len(text.split(" ")) * 0.5
+	$Icons/Speaking/SpeakingTimer.start()
+	
+	
+remotesync func equip(item_name):
+	if current_item:
+		current_item.visible = false
+		current_item = null
+		
+	if item_name:
+		var item = $Inventory.get_node_or_null(item_name)
+		if item:			
+			current_item = item
+			current_item.visible = true
+			
+			
+func _on_hit(gun):
+	rpc("say", "OUCH!")
+			
+
+func _on_SpeakingTimer_timeout():
+	$Icons/Speaking.visible = false
+
+
+func _on_Picker_area_entered(area):
+	$Icons/Hover.visible = true	
+
+
+func _on_Picker_area_exited(area):
+	$Icons/Hover.visible = false

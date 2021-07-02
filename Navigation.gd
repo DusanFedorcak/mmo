@@ -66,7 +66,7 @@ func init_navigation(terrain: TileMap, roads: TileMap, obstacles: TileMap):
 		if has_right and has_down:
 			_try_connect_points(p, Vector2.DOWN + Vector2.RIGHT, access_map, a_star, map_dim)			
 		
-	_update_nav_map(access_map, cell_size, map_dim.size)
+	_update_nav_map(access_map, cell_size, map_dim)
 		
 		
 func get_simple_path(from: Vector2, to: Vector2):
@@ -135,9 +135,9 @@ func _get_point_id(point: Vector2, map_dim: Rect2) -> int:
 	return int((point.y - map_dim.position.y) * map_dim.size.x + point.x - map_dim.position.x)
 					
 					
-func _update_nav_map(map: Dictionary, cell_size: Vector2, map_dim: Vector2):
-	for y in range(map_dim.y):
-		for x in range(map_dim.x):
+func _update_nav_map(map: Dictionary, cell_size: Vector2, map_dim: Rect2):
+	for y in range(map_dim.position.y, map_dim.position.y + map_dim.size.y):
+		for x in range(map_dim.position.x, map_dim.position.x + map_dim.size.x):
 			var point = Vector2(x, y)
 			
 			if not point in map:

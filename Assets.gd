@@ -5,6 +5,17 @@ const CHARACTER_SPRITE_SIZE = 32
 var character_sprites = []
 var names = null
 
+const PASTEL_PALETTE = [
+	Color("ffadad"),
+	Color("ffd6a5"),
+	Color("fdffb6"),
+	Color("caffbf"),
+	Color("9bf6ff"),
+	Color("a0c4ff"),
+	Color("bdb2ff"),
+	Color("ffc6ff"),
+]
+
 func _ready():
 	randomize()
 	var files = get_files("res://assets/characters/", "png")
@@ -17,6 +28,10 @@ func get_random_name():
 	if not names:
 		names = _read_names()
 	return names[randi() % len(names)]
+	
+	
+func get_random_color():
+	return PASTEL_PALETTE[randi() % len(PASTEL_PALETTE)]	
 	
 
 func get_random_character_template():

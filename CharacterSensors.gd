@@ -23,7 +23,7 @@ func tick():
 		if abs(angle) < FOV * 0.5:
 			seen_characters[other_body.id] = _make_record(other_body, direction, angle)
 		if direction.length_squared() < NEAR_BODY_DISTANCE * NEAR_BODY_DISTANCE:
-			near_characters[other_body.id] = _make_record(other_body, direction, angle)
+			near_characters[other_body.id] = _make_record(other_body, direction, angle)		
 				
 	if show_senses:
 		update()

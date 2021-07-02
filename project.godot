@@ -14,7 +14,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Character.gd"
 }, {
-"base": "Node",
+"base": "Node2D",
 "class": "CharacterControls",
 "language": "GDScript",
 "path": "res://CharacterControls.gd"

@@ -1,17 +1,35 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://World.gd" type="Script" id=1]
 [ext_resource path="res://UI.gd" type="Script" id=2]
 [ext_resource path="res://grey_style.tres" type="StyleBox" id=3]
 [ext_resource path="res://Map.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/characters/re_cv_sprites_v1_0_by_doubleleggy_d2hwj7w.png" type="Texture" id=5]
+[ext_resource path="res://assets/water.png" type="Texture" id=6]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 5 )
 region = Rect2( 0, 0, 32, 32 )
 
+[sub_resource type="CircleShape2D" id=2]
+radius = 1.0
+
+[sub_resource type="Gradient" id=3]
+colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1 )
+
 [node name="World" type="Node2D"]
 script = ExtResource( 1 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 1024, 640 )
+
+[node name="Water" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+texture = ExtResource( 6 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 1024, 640 )
 
 [node name="Map" parent="." instance=ExtResource( 4 )]
 
@@ -19,6 +37,7 @@ script = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="Menu" type="PanelContainer" parent="UI"]
+visible = false
 anchor_left = 0.4
 anchor_top = 0.2
 anchor_right = 0.6
@@ -175,6 +194,13 @@ custom_styles/normal = ExtResource( 3 )
 text = "Welcome..."
 scroll_following = true
 
+[node name="Fps" type="Label" parent="UI"]
+margin_right = 40.0
+margin_bottom = 14.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="PlayerCamera" type="Position2D" parent="."]
 position = Vector2( 512, 320 )
 __meta__ = {
@@ -184,6 +210,18 @@ __meta__ = {
 [node name="Camera" type="Camera2D" parent="PlayerCamera"]
 current = true
 smoothing_enabled = true
+
+[node name="MouseLocation" type="Area2D" parent="."]
+input_pickable = false
+
+[node name="Circle" type="CollisionShape2D" parent="MouseLocation"]
+shape = SubResource( 2 )
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PoolVector2Array( 164.332, 82.8612, 114.139, 202.726 )
+width = 1.0
+default_color = Color( 1, 1, 1, 1 )
+gradient = SubResource( 3 )
 
 [connection signal="pressed" from="UI/Menu/VBox/StartServer" to="UI" method="_on_StartServer_pressed"]
 [connection signal="pressed" from="UI/Menu/VBox/HBox/Randomize" to="UI" method="_on_Randomize_pressed"]
