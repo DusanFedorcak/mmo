@@ -13,7 +13,7 @@ var template = 0
 var health = 1
 
 
-signal hit(gun)
+signal hit(gun, from_direction, at_point)
 
 
 var animation = null
@@ -37,6 +37,8 @@ var running = false
 
 
 var current_item = null
+
+var HitFXScene = preload("res://HitFX.tscn")
 
 func set_char_name(n):
 	char_name = n
@@ -137,8 +139,16 @@ remotesync func equip(item_name):
 			current_item.visible = true
 			
 			
-func _on_hit(gun):
-	rpc("say", "OUCH!")
+func _on_hit(gun, from_direction, at_point):		
+	rpc("say", "OUCH!")	
+	rpc("create_hit_effect", at_point)
+	
+
+remotesync func create_hit_effect(at_point):	
+	var hit_fx = HitFXScene.instance()
+	hit_fx.position = at_point
+	hit_fx.modulate = Color.red
+	EventBus.emit_signal("fx_created", hit_fx)
 			
 
 func _on_SpeakingTimer_timeout():

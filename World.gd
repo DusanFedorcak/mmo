@@ -9,10 +9,11 @@ var player = null
 
 func _ready():
 	Globals.world = self	
+	EventBus.connect("fx_created", self, "_on_fx_created")
 
 
 func setup_server():
-	EventBus.connect("player_added", self, "_on_player_added")	
+	EventBus.connect("player_added", self, "_on_player_added")		
 	$Map/Navigation.init_navigation($Map/Terrain, $Map/Roads, $Map/Obstacles)
 	
 	for i in range(10):
@@ -97,3 +98,8 @@ remote func receive_command(command):
 	var character = get_character(id)
 	if character:
 		character.get_node("Controls").receive_command(command)
+		
+		
+func _on_fx_created(fx):
+	$Effects.add_child(fx)
+	

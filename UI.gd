@@ -53,7 +53,7 @@ func _unhandled_input(_event):
 				position = world_node.get_global_mouse_position()
 			})
 			
-		if Input.is_mouse_button_pressed(BUTTON_RIGHT):			
+		if Input.is_action_just_pressed("mouse_right_click"):			
 			commands.append({
 				name = "TURN_TO",
 				position = world_node.get_global_mouse_position()

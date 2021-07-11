@@ -14,7 +14,7 @@
 radius = 4.0
 
 [sub_resource type="CapsuleShape2D" id=2]
-radius = 13.0
+radius = 8.0
 height = 8.0
 
 [sub_resource type="CircleShape2D" id=3]
@@ -82,7 +82,7 @@ script = ExtResource( 10 )
 [node name="ShootLine" type="RayCast2D" parent="Inventory/Gun"]
 enabled = true
 cast_to = Vector2( 400, 0 )
-collision_mask = 6
+collision_mask = 4
 collide_with_areas = true
 
 [node name="Icon" type="Sprite" parent="Inventory/Gun"]

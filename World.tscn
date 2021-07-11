@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://World.gd" type="Script" id=1]
 [ext_resource path="res://UI.gd" type="Script" id=2]
@@ -13,9 +13,6 @@ region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 1.0
-
-[sub_resource type="Gradient" id=3]
-colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1 )
 
 [node name="World" type="Node2D"]
 script = ExtResource( 1 )
@@ -32,6 +29,8 @@ region_enabled = true
 region_rect = Rect2( 0, 0, 1024, 640 )
 
 [node name="Map" parent="." instance=ExtResource( 4 )]
+
+[node name="Effects" type="Node2D" parent="."]
 
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource( 2 )
@@ -216,12 +215,6 @@ input_pickable = false
 
 [node name="Circle" type="CollisionShape2D" parent="MouseLocation"]
 shape = SubResource( 2 )
-
-[node name="Line2D" type="Line2D" parent="."]
-points = PoolVector2Array( 164.332, 82.8612, 114.139, 202.726 )
-width = 1.0
-default_color = Color( 1, 1, 1, 1 )
-gradient = SubResource( 3 )
 
 [connection signal="pressed" from="UI/Menu/VBox/StartServer" to="UI" method="_on_StartServer_pressed"]
 [connection signal="pressed" from="UI/Menu/VBox/HBox/Randomize" to="UI" method="_on_Randomize_pressed"]
