@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://KickbackTween.gd" type="Script" id=1]
+
+[node name="KickbackTween" type="Tween"]
+script = ExtResource( 1 )
+
+[connection signal="tween_all_completed" from="." to="." method="_on_KickbackTween_tween_all_completed"]

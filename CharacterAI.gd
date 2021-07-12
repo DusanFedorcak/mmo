@@ -33,12 +33,21 @@ var greeting_lines = [
 	"Move!",	
 ]
 
-func _ready():
-	pass # Replace with function body.
+
+var events = []
+
+
+func add_event(event):
+	events.append(event)
 
 
 func tick():
 	if enabled:
+		
+		for event in events:
+			_process_event(event)
+		events.clear()
+		
 		if body.state == Character.State.IDLE and randf() < 0.01:
 			body_controls.receive_command({
 				name = "MOVE",
@@ -54,10 +63,20 @@ func tick():
 		if (
 			body.state == Character.State.MOVING and 
 			not body_sensors.near_characters.empty() and
-			randf() < 0.005
+			randf() < 0.01
 		):
 			body_controls.receive_command({
 				name = "SAY",
 				text = greeting_lines[randi() % len(greeting_lines)]
-			})			
+			})
 			
+
+func _process_event(event):
+	match event.name:
+		"HIT":
+			body_controls.receive_command({
+				name = "SAY",
+				text = "OUCH!"
+			})
+		_:
+			pass

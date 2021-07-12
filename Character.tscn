@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Character.gd" type="Script" id=1]
 [ext_resource path="res://assets/characters/char_frames_1.tres" type="SpriteFrames" id=2]
@@ -6,9 +6,10 @@
 [ext_resource path="res://CharacterAI.gd" type="Script" id=4]
 [ext_resource path="res://CharacterSensors.gd" type="Script" id=5]
 [ext_resource path="res://assets/fonts/lucasarts-scumm-outline.fnt" type="BitmapFont" id=6]
+[ext_resource path="res://Gun.tscn" type="PackedScene" id=7]
 [ext_resource path="res://assets/ui/ground_circle.atlastex" type="Texture" id=8]
-[ext_resource path="res://assets/items/gun.atlastex" type="Texture" id=9]
-[ext_resource path="res://Gun.gd" type="Script" id=10]
+[ext_resource path="res://KickbackTween.tscn" type="PackedScene" id=9]
+[ext_resource path="res://DeathTween.tscn" type="PackedScene" id=10]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 4.0
@@ -75,24 +76,19 @@ script = ExtResource( 4 )
 
 [node name="Inventory" type="Node2D" parent="."]
 
-[node name="Gun" type="Node2D" parent="Inventory"]
-visible = false
-script = ExtResource( 10 )
-
-[node name="ShootLine" type="RayCast2D" parent="Inventory/Gun"]
-enabled = true
-cast_to = Vector2( 400, 0 )
-collision_mask = 4
-collide_with_areas = true
-
-[node name="Icon" type="Sprite" parent="Inventory/Gun"]
-position = Vector2( 0, -40 )
-texture = ExtResource( 9 )
+[node name="Gun" parent="Inventory" instance=ExtResource( 7 )]
 
 [node name="Shape" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -16 )
 frames = ExtResource( 2 )
 animation = "walk_down"
+
+[node name="KickbackTween" parent="Shape" instance=ExtResource( 9 )]
+duration = 0.05
+strength = 5.0
+
+[node name="DeathTween" parent="Shape" instance=ExtResource( 10 )]
+duration = 0.1
 
 [node name="Icons" type="Node2D" parent="."]
 z_index = 100

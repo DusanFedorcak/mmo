@@ -34,7 +34,7 @@ func _on_player_added(id, info):
 		for existing in $Map/Characters.get_children():
 			rpc_id(id, "add_character", 
 				existing.id, existing.char_name, existing.template, existing.position, existing.color, true
-			)	
+			)			
 	
 	# add to server
 	var character = add_character(

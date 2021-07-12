@@ -11,26 +11,27 @@ onready var sensors: CharacterSensors = get_node("../Sensors")
 		
 		
 func receive_command(command):
-	match command.name:
-		"MOVE":						
-			path = Globals.world.get_node("Map/Navigation").get_simple_path(body.position, command.position)				
-			body.state = Character.State.MOVING
-			$WorldIcons/Target.position = command.position
-			$WorldIcons/Path.points = path			
-		"TURN_TO":						
-			body.state = Character.State.IDLE
-			body.facing_direction = (command.position - body.position).normalized()
-		"SAY":
-			body.rpc("say", command.text)
-		"EQUIP":
-			body.rpc("equip", command.item_name)
-		"UNEQUIP":
-			body.rpc("equip", null)
-		"USE":			
-			if body.current_item:
-				body.current_item.use(body)
-		_:
-			pass
+	if body.state != Character.State.DEAD:
+		match command.name:
+			"MOVE":						
+				path = Globals.world.get_node("Map/Navigation").get_simple_path(body.position, command.position)				
+				body.state = Character.State.MOVING
+				$WorldIcons/Target.position = command.position
+				$WorldIcons/Path.points = path			
+			"TURN_TO":						
+				body.state = Character.State.IDLE
+				body.facing_direction = (command.position - body.position).normalized()
+			"SAY":
+				body.rpc("say", command.text)
+			"EQUIP":
+				body.rpc("equip", command.item_name)
+			"UNEQUIP":
+				body.rpc("equip", null)
+			"USE":			
+				if body.current_item:
+					body.current_item.use(body)
+			_:
+				pass
 			
 			
 func _process(delta):
@@ -38,9 +39,7 @@ func _process(delta):
 		
 		
 func tick():	
-	match body.state:
-		Character.State.IDLE:
-			pass
+	match body.state:		
 		Character.State.MOVING:
 			var waypoint = _get_nearest_waypoint()
 			if waypoint:
@@ -51,6 +50,8 @@ func tick():
 			else:						
 				body.state = Character.State.IDLE
 				body.set_motion(Vector2.ZERO)		
+		_:
+			pass
 	
 
 func _avoid_crowded(direction, avoid_multiplier):
