@@ -1,4 +1,4 @@
-extends "res://FadingFX.gd"
+extends "res://scenes/effects/FadingFX.gd"
 
 
 func _ready():

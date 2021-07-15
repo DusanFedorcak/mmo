@@ -1,21 +1,21 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://World.gd" type="Script" id=1]
-[ext_resource path="res://UI.gd" type="Script" id=2]
-[ext_resource path="res://grey_style.tres" type="StyleBox" id=3]
-[ext_resource path="res://Map.tscn" type="PackedScene" id=4]
-[ext_resource path="res://assets/characters/re_cv_sprites_v1_0_by_doubleleggy_d2hwj7w.png" type="Texture" id=5]
-[ext_resource path="res://assets/water.png" type="Texture" id=6]
+[ext_resource path="res://grey_style.tres" type="StyleBox" id=1]
+[ext_resource path="res://scenes/World.gd" type="Script" id=2]
+[ext_resource path="res://assets/characters/re_cv_sprites_v1_0_by_doubleleggy_d2hwj7w.png" type="Texture" id=3]
+[ext_resource path="res://assets/water.png" type="Texture" id=4]
+[ext_resource path="res://scenes/UI.gd" type="Script" id=5]
+[ext_resource path="res://scenes/Map.tscn" type="PackedScene" id=6]
 
 [sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 5 )
+atlas = ExtResource( 3 )
 region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 1.0
 
 [node name="World" type="Node2D"]
-script = ExtResource( 1 )
+script = ExtResource( 2 )
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -23,17 +23,17 @@ script = ExtResource( 1 )
 motion_mirroring = Vector2( 1024, 640 )
 
 [node name="Water" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
-texture = ExtResource( 6 )
+texture = ExtResource( 4 )
 centered = false
 region_enabled = true
 region_rect = Rect2( 0, 0, 1024, 640 )
 
-[node name="Map" parent="." instance=ExtResource( 4 )]
+[node name="Map" parent="." instance=ExtResource( 6 )]
 
 [node name="Effects" type="Node2D" parent="."]
 
 [node name="UI" type="CanvasLayer" parent="."]
-script = ExtResource( 2 )
+script = ExtResource( 5 )
 
 [node name="Menu" type="PanelContainer" parent="UI"]
 visible = false
@@ -189,7 +189,7 @@ margin_right = 296.0
 margin_bottom = 185.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/normal = ExtResource( 3 )
+custom_styles/normal = ExtResource( 1 )
 text = "Welcome..."
 scroll_following = true
 

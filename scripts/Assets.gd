@@ -1,8 +1,5 @@
 extends Node
 
-const CHARACTER_SPRITE_SIZE = 32
-
-var character_sprites = []
 var names = null
 
 const PASTEL_PALETTE = [
@@ -16,12 +13,21 @@ const PASTEL_PALETTE = [
 	Color("ffc6ff"),
 ]
 
+const CHARACTER_SPRITE_SIZE = 32
+const CHARACTER_FILES = [
+	"re1_sprites_v1_0_by_doubleleggy_d2gj3yy.png",
+	"re2_sprites_v1_1_by_doubleleggy_d2qb57d.png",
+	"re3___monster_sprites_v1_0_by_doubleleggy_d2h3lq9.png",
+	"re_cv_sprites_v1_0_by_doubleleggy_d2hwj7w.png",
+	"re_side_character_sprites_v1_0_by_doubleleggy_d2hz61y.png",
+	"visoes_3_sprites_by_doubleleggy_d2l91ct.png",	
+]
+var character_sprites = []
+
 func _ready():
 	randomize()
-	var files = get_files("res://assets/characters/", "png")
-	files.sort()
-	for file in files:
-		load_characters_from_texture(file)
+	for file in CHARACTER_FILES:
+		load_characters_from_texture("res://assets/characters/" + file)
 	
 	
 func get_random_name():

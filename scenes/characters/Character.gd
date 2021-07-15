@@ -39,7 +39,7 @@ var running = false
 
 var current_item = null
 
-var HitFXScene = preload("res://HitFX.tscn")
+var HitFXScene = preload("res://scenes/effects/HitFX.tscn")
 
 func set_char_name(n):
 	char_name = n

@@ -1,6 +1,6 @@
 extends Node2D
 
-var ShotFXScene = preload("res://ShotFX.tscn")
+var ShotFXScene = preload("res://scenes/effects/ShotFX.tscn")
 
 export(float) var aim_spread = 10.0
 export(float) var cooldown = 0.1

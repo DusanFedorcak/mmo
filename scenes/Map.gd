@@ -1,6 +1,6 @@
 extends YSort
 
-var HitFXScene = preload("res://HitFX.tscn")
+var HitFXScene = preload("res://scenes/effects/HitFX.tscn")
 
 signal hit(gun, from_direction, at_point)
 

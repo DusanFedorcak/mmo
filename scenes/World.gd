@@ -1,7 +1,7 @@
 extends Node2D
 class_name WorldNode
 
-const CharacterScene = preload("res://Character.tscn")
+const CharacterScene = preload("res://scenes/characters/Character.tscn")
 
 
 var player = null
