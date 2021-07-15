@@ -2,18 +2,16 @@ extends Node2D
 class_name WorldNode
 
 const CharacterScene = preload("res://scenes/characters/Character.tscn")
-
-
 var player = null
 
 
 func _ready():
 	Globals.world = self	
-	EventBus.connect("fx_created", self, "_on_fx_created")
+	EventBus.connect("fx_created", self, "_on_fx_created")	
 
 
 func setup_server():
-	EventBus.connect("player_added", self, "_on_player_added")		
+	EventBus.connect("player_added", self, "_on_player_added")			
 	$Map/Navigation.init_navigation($Map/Terrain, $Map/Roads, $Map/Obstacles)
 	
 	for i in range(10):
@@ -21,7 +19,7 @@ func setup_server():
 			-i, 
 			Assets.get_random_name(), 
 			Assets.get_random_character_template(),
-			$Map/Navigation.get_random_empty_cell(), 
+			$Map/Navigation.get_random_reachable_cell(), 
 			Assets.get_random_color(),
 			false
 		)
@@ -39,7 +37,7 @@ func _on_player_added(id, info):
 	# add to server
 	var character = add_character(
 		id, info["name"], info["template"], 
-		$Map/Navigation.get_closest_empty_cell(Vector2(500, 300)), 
+		$Map/Navigation.get_random_reachable_cell(), 
 		Assets.get_random_color(),
 		false
 	)
@@ -102,4 +100,5 @@ remote func receive_command(command):
 		
 func _on_fx_created(fx):
 	$Effects.add_child(fx)
+
 	

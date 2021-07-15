@@ -51,7 +51,7 @@ func tick():
 		if body.state == Character.State.IDLE and randf() < 0.01:
 			body_controls.receive_command({
 				name = "MOVE",
-				position =  Globals.world.get_node("Map/Navigation").get_random_empty_cell(),				
+				position =  Globals.world.get_node("Map/Navigation").get_random_reachable_cell(body.position),				
 			})
 			
 		if body.state == Character.State.IDLE and randf() < 0.004:			
@@ -62,7 +62,7 @@ func tick():
 						
 		if (
 			body.state == Character.State.MOVING and 
-			not body_sensors.near_characters.empty() and
+			not body_sensors.characters.near.empty() and
 			randf() < 0.01
 		):
 			body_controls.receive_command({

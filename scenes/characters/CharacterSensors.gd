@@ -7,27 +7,51 @@ const NEAR_BODY_DISTANCE = 50
 onready var body: Character = get_parent()
 var show_senses = false
 
-var seen_characters: Dictionary = {}
-var near_characters: Dictionary = {}
+var characters: Dictionary = {
+	"seen": {},
+	"near": {}
+}
+
+var items: Dictionary = {
+	"seen": {},
+	"near": {}
+}
 
 func tick():	
 	var near_bodies = $Sight.get_overlapping_bodies()
-	seen_characters.clear()
-	near_characters.clear()
 	
+	_clear_sensors()
+		
 	for other_body in near_bodies:
-		if other_body == body or not other_body is Character:
-			continue		
+		if other_body == body:			
+			continue					
+					
 		var direction = other_body.position - body.position
 		var angle = body.facing_direction.angle_to(direction)
+		var container = _resolve_body_type(other_body)
+		
 		if abs(angle) < FOV * 0.5:
-			seen_characters[other_body.id] = _make_record(other_body, direction, angle)
+			container.seen[other_body.id] = _make_record(other_body, direction, angle)
 		if direction.length_squared() < NEAR_BODY_DISTANCE * NEAR_BODY_DISTANCE:
-			near_characters[other_body.id] = _make_record(other_body, direction, angle)		
+			container.near[other_body.id] = _make_record(other_body, direction, angle)		
 				
 	if show_senses:
 		update()
+		
 
+func _clear_sensors():
+	characters.seen.clear()
+	characters.near.clear()
+	items.seen.clear()
+	items.near.clear()
+	
+
+func _resolve_body_type(body):
+	if body is Character:
+		return characters
+	elif body is Item:
+		return items
+		
 
 func _make_record(body, direction, angle):
 	return {
@@ -39,15 +63,23 @@ func _make_record(body, direction, angle):
 		
 func get_most_crowded_direction():
 	var result = Vector2.ZERO
-	for _char in near_characters.values():		
+	for _char in characters.near.values():		
 		if _char.distance > 0:
 			result += _char.direction / _char.distance * inverse_lerp(NEAR_BODY_DISTANCE, 0, _char.distance)				
-	return result / len(near_characters) if not near_characters.empty() else Vector2.ZERO
+	return result / len(characters.near) if not characters.near.empty() else Vector2.ZERO
 
 			
 func _draw():	
 	if show_senses:	
-		for _char in near_characters:
-			draw_circle(_char.direction, 10, Color.white)
+		for _char in characters.near.values():
+			draw_line(Vector2.ZERO, _char.direction, Color.white, 2.0)		
+		for _char in characters.seen.values():
+			draw_line(Vector2.ZERO, _char.direction, Color.gray, 2.0)
+		
+		for _item in items.near.values():
+			draw_line(Vector2.ZERO,_item.direction, Color.yellow, 2.0)		
+		for _item in items.seen.values():
+			draw_line(Vector2.ZERO,_item.direction, Color.darkkhaki, 2.0)
+	
 		
 		draw_line(Vector2.ZERO, get_most_crowded_direction() * 20, Color.red)

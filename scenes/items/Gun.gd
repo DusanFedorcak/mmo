@@ -1,4 +1,4 @@
-extends Node2D
+extends "res://scenes/items/Item.gd"
 
 var ShotFXScene = preload("res://scenes/effects/ShotFX.tscn")
 
@@ -18,7 +18,7 @@ func use(by_body: Character):
 		#second, test whether something was hit
 		$ShootLine.clear_exceptions()
 		$ShootLine.add_exception(by_body)
-		$ShootLine.add_exception(by_body.get_node("Picker"))	
+		$ShootLine.add_exception(by_body.get_node("HitBox"))	
 		$ShootLine.rotation = aim_angle
 		$ShootLine.force_raycast_update()
 		

@@ -41,11 +41,15 @@ func _unhandled_input(_event):
 		$Menu.visible = not $Menu.visible
 		
 	if Input.is_action_just_pressed("ui_fullscreen"):
-		OS.window_fullscreen = not OS.window_fullscreen
+		OS.window_fullscreen = not OS.window_fullscreen	
 		
 	
 	if Network.is_connected and world_node.player:
 		var commands = []
+				
+		if Input.is_action_just_pressed("ui_show_senses"):
+			var sensors = world_node.player.get_node("Sensors")
+			sensors.show_senses = !sensors.show_senses		
 		
 		if Input.is_mouse_button_pressed(BUTTON_LEFT):			
 			commands.append({
@@ -59,13 +63,13 @@ func _unhandled_input(_event):
 				position = world_node.get_global_mouse_position()
 			})
 			
-			if world_node.player.current_item:
+			if world_node.player.inventory.current_item:
 				commands.append({
 					name = "USE",
 				})
 			
 		if Input.is_action_just_pressed("ui_select"):
-			if not world_node.player.current_item:
+			if not world_node.player.inventory.current_item:
 				commands.append({
 					name = "EQUIP",
 					item_name = "Gun"
@@ -74,6 +78,10 @@ func _unhandled_input(_event):
 				commands.append({
 					name = "UNEQUIP",
 				})
+		if Input.is_action_just_pressed("ui_drop_item"):			
+			commands.append({
+				name = "DROP",					
+			})			
 						
 		for command in commands:				
 			#for local play

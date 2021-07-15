@@ -27,6 +27,7 @@ enum State {
 }
 
 var state = State.IDLE
+onready var inventory = get_node("Inventory")
 
 
 export(float) var walking_speed = 40.0
@@ -36,8 +37,6 @@ var facing_direction: Vector2 = Vector2.DOWN
 var motion_direction: Vector2 = Vector2.ZERO
 var running = false
 
-
-var current_item = null
 
 var HitFXScene = preload("res://scenes/effects/HitFX.tscn")
 
@@ -128,18 +127,6 @@ remotesync func say(text):
 	$Icons/Speaking.visible = true
 	$Icons/Speaking/SpeakingTimer.wait_time = len(text.split(" ")) * 0.5
 	$Icons/Speaking/SpeakingTimer.start()
-	
-	
-remotesync func equip(item_name):
-	if current_item:
-		current_item.visible = false
-		current_item = null
-		
-	if item_name:
-		var item = $Inventory.get_node_or_null(item_name)
-		if item:			
-			current_item = item
-			current_item.visible = true
 			
 			
 func _on_hit(gun, from_direction, at_point):			
@@ -147,6 +134,9 @@ func _on_hit(gun, from_direction, at_point):
 		health -= gun.damage
 		if health <= 0:		
 			state = State.DEAD
+			$CollisionShape.disabled = true
+			$HitBox/Circle.disabled = true
+			EventBus.emit_signal("character_died", id)
 			rpc("show_death")
 		else:
 			$AI.add_event({

@@ -88,6 +88,15 @@ func get_simple_path(from: Vector2, to: Vector2):
 func get_random_empty_cell():		
 	var point = a_star.get_points()[randi() % a_star.get_point_count()]
 	return a_star.get_point_position(point) + cell_size * 0.5
+
+
+func get_random_reachable_cell(from_point=null):
+	if not from_point:
+		from_point = $"../Center".position
+	while true:
+		var target = get_random_empty_cell()
+		if get_simple_path(from_point, target):		
+			return target
 	
 	
 func get_closest_empty_cell(position: Vector2):

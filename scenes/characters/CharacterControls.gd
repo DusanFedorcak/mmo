@@ -24,12 +24,15 @@ func receive_command(command):
 			"SAY":
 				body.rpc("say", command.text)
 			"EQUIP":
-				body.rpc("equip", command.item_name)
+				body.inventory.rpc("equip", command.item_name)
 			"UNEQUIP":
-				body.rpc("equip", null)
-			"USE":			
-				if body.current_item:
-					body.current_item.use(body)
+				body.inventory.rpc("equip", null)
+			"USE":				
+				if body.inventory.current_item:
+					body.inventory.current_item.use(body)
+			"DROP":
+				if body.inventory.current_item:
+					body.inventory.rpc("drop_current", body.position)
 			_:
 				pass
 			
