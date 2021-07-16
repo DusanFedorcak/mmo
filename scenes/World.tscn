@@ -30,8 +30,6 @@ region_rect = Rect2( 0, 0, 1024, 640 )
 
 [node name="Map" parent="." instance=ExtResource( 6 )]
 
-[node name="Effects" type="Node2D" parent="."]
-
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource( 5 )
 

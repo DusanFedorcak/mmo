@@ -40,13 +40,6 @@ func _connected_fail():
 	pass # Could not even connect to server; abort.
 
 
-remote func register_player(info):		
-	var id = get_tree().get_rpc_sender_id()
-	player_info[id] = info
-	Log.info("Registering player %d as %s." % [id, info])
-	EventBus.emit_signal("player_added", id, info)	
-
-
 func create_server(port):		
 	Log.info("Creating server at %d ..." % port)
 	get_tree().connect("network_peer_connected", self, "_player_connected")
@@ -78,3 +71,13 @@ func connect_server(player_name, player_template, address, port):
 
 func disconnect_network():
 	get_tree().network_peer = null
+	
+
+# --- REMOTE FUNCTIONS ---
+	
+
+master func register_player(info):		
+	var network_id = get_tree().get_rpc_sender_id()
+	player_info[network_id] = info
+	Log.info("Registering player %d as %s." % [network_id, info])
+	EventBus.emit_signal("player_registered", network_id, info)	

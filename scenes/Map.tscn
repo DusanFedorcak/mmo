@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/Navigation.gd" type="Script" id=1]
 [ext_resource path="res://assets/tilesets/terrains.tres" type="TileSet" id=2]
 [ext_resource path="res://assets/tilesets/roads_tileset.tres" type="TileSet" id=3]
 [ext_resource path="res://assets/tilesets/obstacles.tres" type="TileSet" id=4]
 [ext_resource path="res://scenes/Map.gd" type="Script" id=5]
+[ext_resource path="res://scenes/items/Gun.tscn" type="PackedScene" id=6]
 
 [node name="Map" type="YSort"]
 script = ExtResource( 5 )
@@ -41,7 +42,13 @@ tile_data = PoolIntArray( -655348, 4, 0, -655344, 3, 0, -524280, 1, 0, -524271, 
 
 [node name="Items" type="YSort" parent="."]
 
+[node name="Gun" parent="Items" instance=ExtResource( 6 )]
+position = Vector2( 414.365, 199.404 )
+
 [node name="Characters" type="YSort" parent="."]
+
+[node name="Effects" type="YSort" parent="."]
+sort_enabled = false
 
 [node name="Navigation" type="Node2D" parent="."]
 script = ExtResource( 1 )

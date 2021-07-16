@@ -81,14 +81,15 @@ func _unhandled_input(_event):
 		if Input.is_action_just_pressed("ui_drop_item"):			
 			commands.append({
 				name = "DROP",					
-			})			
+			})
+		if Input.is_action_just_pressed("ui_take_item"):			
+			commands.append({
+				name = "TAKE_NEAREST",					
+			})		
 						
-		for command in commands:				
-			#for local play
-			if world_node.player.id == 1:
-				world_node.player.get_node("Controls").receive_command(command)
-			else:
-				world_node.rpc_id(1, "receive_command", command)
+		for command in commands:
+			#send command to server			
+			world_node.player.get_node("Controls").rpc_id(1, "receive_command", command)	
 
 
 func _on_StartServer_pressed():
@@ -98,7 +99,7 @@ func _on_StartServer_pressed():
 		$Menu/VBox/Localgame.disabled = true
 		$Menu.visible = false
 		Network.create_server(parse_server_address().port)
-		world_node.setup_server()
+		world_node.setup_for_server()
 
 
 func _on_JoinGame_pressed():
@@ -146,8 +147,8 @@ func _on_Localgame_pressed():
 
 		var server_info = parse_server_address()
 		Network.create_server(parse_server_address().port)
-		world_node.setup_server()
-		EventBus.emit_signal("player_added", 1, { 
+		world_node.setup_for_server()
+		EventBus.emit_signal("player_registered", 1, { 
 			name = $Menu/VBox/HBox/PlayerName.text,
 			template = player_template
 		})

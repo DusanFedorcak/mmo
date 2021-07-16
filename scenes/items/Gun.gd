@@ -27,6 +27,9 @@ func use(by_body: Character):
 			#if so, pass the info to the target
 			var hit_node = hit.get_parent()		
 			hit_node.emit_signal("hit", self, by_body.facing_direction, $ShootLine.get_collision_point())		
+
+
+# --- REMOTE FUNCTIONS ---
 					
 
 remotesync func create_shot_effect(at_point, in_direction):
