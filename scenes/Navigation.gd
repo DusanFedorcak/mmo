@@ -5,12 +5,8 @@ var a_star: AStar2D = null
 var cell_size = null
 var map_dim = null
 
-func _ready():	
-	pass
 
-
-func init_navigation(terrain: TileMap, roads: TileMap, obstacles: TileMap):			
-	
+func init_navigation(terrain: TileMap, roads: TileMap, obstacles: TileMap):				
 	map_dim = terrain.get_used_rect()
 	cell_size = terrain.cell_size
 	
@@ -92,7 +88,7 @@ func get_random_empty_cell():
 
 func get_random_reachable_cell(from_point=null):
 	if not from_point:
-		from_point = $"../Center".position
+		from_point = $Center.position
 	while true:
 		var target = get_random_empty_cell()
 		if get_simple_path(from_point, target):		
@@ -160,8 +156,8 @@ func _update_nav_map(map: Dictionary, cell_size: Vector2, map_dim: Rect2):
 				$NavMap.add_child(rect)
 		
 
-func _unhandled_key_input(event):
-	if Input.is_action_just_pressed("ui_nav_map"):
+func _unhandled_key_input(_event):
+	if _event.is_action_pressed("debug_show_nav_map"):
 		$NavMap.visible = not $NavMap.visible
 	
 	

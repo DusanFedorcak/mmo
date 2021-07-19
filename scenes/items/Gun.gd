@@ -6,6 +6,8 @@ export(float) var aim_spread = 10.0
 export(float) var cooldown = 0.1
 export(float) var damage = 25.0
 
+func _init():	
+	scene = "Gun"
 
 func use(by_body: Character):
 	if $CooldownTimer.is_stopped():			

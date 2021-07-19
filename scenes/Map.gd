@@ -58,6 +58,7 @@ func spawn_player(network_id, player_info):
 	# add new one to all clients 
 	rpc("add_character", new_player_char.dump_info())	
 		
+		
 func send_state_update():	
 	var game_state = {}
 	#OPTIMIZE SENT STATE TO SCREEN PROXIMITY objects
@@ -71,7 +72,11 @@ func _on_player_registered(network_id, player_info):
 	# add all existing characters to the new player's map
 	if network_id != 1:
 		for existing in $Characters.get_children():
-			rpc_id(network_id, "add_character", existing.dump_info())				
+			rpc_id(network_id, "add_character", existing.dump_info())
+		
+		for existing in $Items.get_children():
+			rpc_id(network_id, "add_item", existing.dump_info())				
+			
 				
 	spawn_player(network_id, player_info)	
 
@@ -108,8 +113,9 @@ remote func add_character(character_info):
 	return character
 	
 	
-remote func add_item():
-	pass
+remote func add_item(item_info):
+	$Items.add_child(Item.create_from_info(item_info))	
+	
 
 puppet func update_state(game_state):
 	for char_id in game_state:

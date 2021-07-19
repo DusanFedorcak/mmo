@@ -42,9 +42,10 @@ func set_motion(direction, _running=false):
 
 func _init():
 	id = get_instance_id()
-
+	
 
 func _ready():			
+	name = str(id)
 	$CollisionShape.disabled = not Network.is_server
 	$Icons/Speaking.visible = false
 	color = Assets.get_random_color()
@@ -69,28 +70,33 @@ func dump_info():
 		template = template, 
 		position = position, 
 		color = color,
-		
+		inventory = $Inventory.dump_info()
 	}
+			
 	if $Inventory.current_item:
-		info.current_item = $Inventory.current_item.name
+		info.current_item = str($Inventory.current_item.id)
 	return info
 	
 
 func setup_from_info(info):
 	if "id" in info:			
 		id = info.id
+	name = str(id)
 	player_id = info.player_id if "player_id" in info else -1
 	char_name = info.char_name	
 	template = info.template
 	position = info.position
 	color = info.color
-	
-	name = str(id)	
+		
 	$Icons/Name.text = char_name
 	$Shape.frames = Assets.character_sprites[template]
 	
-	if "current_item" in info:
-		$Inventory.equip(info.current_item)
+	if "inventory" in info:
+		$Inventory.setup_from_info(info.inventory)
+		
+	if "current_item" in info:				
+		print($Inventory.get_child(0).name)		
+		$Inventory.current_item = $Inventory.get_node(info.current_item)
 	
 	
 func dump_state():

@@ -1,0 +1,157 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/characters/re_cv_sprites_v1_0_by_doubleleggy_d2hwj7w.png" type="Texture" id=1]
+[ext_resource path="res://ui/MainMenu.gd" type="Script" id=2]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 32, 32 )
+
+[node name="MainMenu" type="PanelContainer"]
+anchor_left = 0.4
+anchor_top = 0.2
+anchor_right = 0.6
+anchor_bottom = 0.6
+margin_left = 0.399994
+margin_right = 14.6
+margin_bottom = 44.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBox" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 212.0
+margin_bottom = 301.0
+alignment = 2
+
+[node name="Label" type="Label" parent="VBox"]
+margin_right = 205.0
+margin_bottom = 14.0
+size_flags_vertical = 2
+text = "MENU"
+align = 1
+
+[node name="HSeparator" type="HSeparator" parent="VBox"]
+margin_top = 18.0
+margin_right = 205.0
+margin_bottom = 22.0
+
+[node name="Label3" type="Label" parent="VBox"]
+margin_top = 26.0
+margin_right = 205.0
+margin_bottom = 40.0
+text = "Server Address:"
+
+[node name="ServerAddress" type="LineEdit" parent="VBox"]
+margin_top = 44.0
+margin_right = 205.0
+margin_bottom = 68.0
+text = "127.0.0.1:9876"
+
+[node name="StartServer" type="Button" parent="VBox"]
+margin_top = 72.0
+margin_right = 205.0
+margin_bottom = 92.0
+text = "start server"
+
+[node name="HSeparator2" type="HSeparator" parent="VBox"]
+margin_top = 96.0
+margin_right = 205.0
+margin_bottom = 100.0
+
+[node name="Label2" type="Label" parent="VBox"]
+margin_top = 104.0
+margin_right = 205.0
+margin_bottom = 118.0
+text = "Player Name:"
+
+[node name="HBox" type="HBoxContainer" parent="VBox"]
+margin_top = 122.0
+margin_right = 205.0
+margin_bottom = 146.0
+
+[node name="PlayerName" type="LineEdit" parent="VBox/HBox"]
+margin_right = 137.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="Randomize" type="Button" parent="VBox/HBox"]
+margin_left = 141.0
+margin_right = 205.0
+margin_bottom = 24.0
+text = "Random"
+
+[node name="PlayerSelection" type="HBoxContainer" parent="VBox"]
+margin_top = 150.0
+margin_right = 205.0
+margin_bottom = 214.0
+alignment = 2
+
+[node name="Appearance" type="TextureRect" parent="VBox/PlayerSelection"]
+margin_right = 89.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 64, 64 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = SubResource( 1 )
+expand = true
+stretch_mode = 5
+
+[node name="PreviousChar" type="Button" parent="VBox/PlayerSelection"]
+margin_left = 93.0
+margin_right = 113.0
+margin_bottom = 20.0
+size_flags_vertical = 0
+text = "<"
+
+[node name="NextChar" type="Button" parent="VBox/PlayerSelection"]
+margin_left = 117.0
+margin_right = 137.0
+margin_bottom = 20.0
+size_flags_vertical = 0
+text = ">"
+
+[node name="RandomizeTemplate" type="Button" parent="VBox/PlayerSelection"]
+margin_left = 141.0
+margin_right = 205.0
+margin_bottom = 20.0
+size_flags_vertical = 0
+text = "Random"
+
+[node name="JoinGame" type="Button" parent="VBox"]
+margin_top = 218.0
+margin_right = 205.0
+margin_bottom = 238.0
+text = "join game"
+
+[node name="Localgame" type="Button" parent="VBox"]
+margin_top = 242.0
+margin_right = 205.0
+margin_bottom = 262.0
+text = "local game"
+
+[node name="HSeparator3" type="HSeparator" parent="VBox"]
+margin_top = 266.0
+margin_right = 205.0
+margin_bottom = 270.0
+
+[node name="Exit" type="Button" parent="VBox"]
+margin_top = 274.0
+margin_right = 205.0
+margin_bottom = 294.0
+text = "exit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="VBox/StartServer" to="." method="_on_StartServer_pressed"]
+[connection signal="pressed" from="VBox/HBox/Randomize" to="." method="_on_Randomize_pressed"]
+[connection signal="pressed" from="VBox/PlayerSelection/PreviousChar" to="." method="_on_PreviousChar_pressed"]
+[connection signal="pressed" from="VBox/PlayerSelection/NextChar" to="." method="_on_NextChar_pressed"]
+[connection signal="pressed" from="VBox/PlayerSelection/RandomizeTemplate" to="." method="_on_RandomizeTemplate_pressed"]
+[connection signal="pressed" from="VBox/JoinGame" to="." method="_on_JoinGame_pressed"]
+[connection signal="pressed" from="VBox/Localgame" to="." method="_on_Localgame_pressed"]
+[connection signal="pressed" from="VBox/Exit" to="." method="_on_Exit_pressed"]

@@ -2,24 +2,12 @@ extends CanvasLayer
 
 
 onready var world_node = $".."
-var is_server = false
-var player_template = 0
-
-const MAX_PLAYERS = 32
 	
-	
-func _update_player_template():
-	$Menu/VBox/PlayerSelection/Appearance.texture = (
-		Assets.character_sprites[player_template].get_frame("walk_down", 0)
-	)
-
 
 func _ready():
 	Log.register_target(self)
-	$Menu/VBox/HBox/PlayerName.text = Assets.get_random_name()
-	player_template = randi() % len(Assets.character_sprites)	
-	_update_player_template()
-	$Menu.visible = true
+	$Help.visible = false
+	_populate_help()
 
 
 func _process(delta):
@@ -27,130 +15,81 @@ func _process(delta):
 		$Fps.text = str(int(1.0 / delta))	
 
 
-func parse_server_address():
-	var parsed = $Menu/VBox/ServerAddress.text.split(":")
-	return { address = parsed[0], port = parsed[1].to_int()}
-
-
-func _on_Exit_pressed():
-	get_tree().quit()
-
-
-func _unhandled_input(_event):
-	if Input.is_action_just_pressed("ui_cancel"):
-		$Menu.visible = not $Menu.visible
+func _unhandled_input(_event):	
+	if _event.is_action_pressed("ui_cancel"):
+		$MainMenu.visible = not $MainMenu.visible
 		
-	if Input.is_action_just_pressed("ui_fullscreen"):
-		OS.window_fullscreen = not OS.window_fullscreen	
+	if _event.is_action_pressed("control_fullscreen"):
+		OS.window_fullscreen = not OS.window_fullscreen
 		
-	
+	if _event.is_action_pressed("control_show_help") and not $MainMenu.visible:
+		$Help.visible = not $Help.visible
+			
 	if Network.is_connected and world_node.player:
-		var commands = []
+		var commands = []			
 				
-		if Input.is_action_just_pressed("ui_show_senses"):
-			var sensors = world_node.player.get_node("Sensors")
-			sensors.show_senses = !sensors.show_senses		
-		
-		if Input.is_mouse_button_pressed(BUTTON_LEFT):			
+		if _event.is_action_pressed("control_move"):			
 			commands.append({
 				name = "MOVE",
 				position = world_node.get_global_mouse_position()
-			})
+			})			
 			
-		if Input.is_action_just_pressed("mouse_right_click"):						
+		if _event.is_action_pressed("control_turn_and_use"):						
 			commands.append({
 				name = "TURN_TO",
 				position = world_node.get_global_mouse_position()
 			})
+			commands.append({
+				name = "USE",
+			})
+								
+		if _event.is_action_pressed("control_equip_0"):			
+			commands.append({
+				name = "EQUIP",
+				index = 0,
+			})	
 			
-			if world_node.player.inventory.current_item:
-				commands.append({
-					name = "USE",
-				})
-			
-		if Input.is_action_just_pressed("ui_select"):
-			if not world_node.player.inventory.current_item:
-				commands.append({
-					name = "EQUIP",
-					item_name = "Gun"
-				})
-			else:
-				commands.append({
-					name = "UNEQUIP",
-				})
-		if Input.is_action_just_pressed("ui_drop_item"):			
+		if _event.is_action_pressed("control_unequip"):		
+			commands.append({
+				name = "UNEQUIP",
+			})
+				
+		if _event.is_action_pressed("control_drop_item"):			
 			commands.append({
 				name = "DROP",					
 			})
-		if Input.is_action_just_pressed("ui_take_item"):			
+			
+		if _event.is_action_pressed("control_take_item"):					
 			commands.append({
 				name = "TAKE_NEAREST",					
-			})		
+			})						
 						
 		for command in commands:
 			#send command to server			
-			world_node.player.get_node("Controls").rpc_id(1, "receive_command", command)	
-
-
-func _on_StartServer_pressed():
-	if not world_node.player:		
-		$Menu/VBox/JoinGame.disabled = true
-		$Menu/VBox/StartServer.disabled = true
-		$Menu/VBox/Localgame.disabled = true
-		$Menu.visible = false
-		Network.create_server(parse_server_address().port)
-		world_node.setup_for_server()
-
-
-func _on_JoinGame_pressed():
-	if not world_node.player:		
-		$Menu/VBox/JoinGame.disabled = true
-		$Menu/VBox/StartServer.disabled = true
-		$Menu/VBox/Localgame.disabled = true
-		$Menu.visible = false
-
-		var server_info = parse_server_address()
-		Network.connect_server(
-			$Menu/VBox/HBox/PlayerName.text, player_template, server_info.address, server_info.port
-		)
+			world_node.player.get_node("Controls").rpc_id(1, "receive_command", command)			
+			
+		if _event.is_action_pressed("debug_show_senses"):
+			var sensors = world_node.player.get_node("Sensors")
+			sensors.show_senses = !sensors.show_senses		
 
 
 func log_message(message):
 	$Console/Output.text += "\n" + message
+	
 
-
-func _on_Randomize_pressed():
-	$Menu/VBox/HBox/PlayerName.text = Assets.get_random_name()
-
-
-func _on_PreviousChar_pressed():
-	player_template = (player_template - 1) % len(Assets.character_sprites)
-	_update_player_template()
-
-
-func _on_NextChar_pressed():
-	player_template = (player_template + 1) % len(Assets.character_sprites)
-	_update_player_template()
-
-
-func _on_RandomizeTemplate_pressed():
-	player_template = randi() % len(Assets.character_sprites)	
-	_update_player_template()
-
-
-func _on_Localgame_pressed():
-	if not world_node.player:		
-		$Menu/VBox/JoinGame.disabled = true
-		$Menu/VBox/StartServer.disabled = true
-		$Menu/VBox/Localgame.disabled = true
-		$Menu.visible = false
-
-		var server_info = parse_server_address()
-		Network.create_server(parse_server_address().port)
-		world_node.setup_for_server()
-		EventBus.emit_signal("player_registered", 1, { 
-			name = $Menu/VBox/HBox/PlayerName.text,
-			template = player_template
-		})
-		
-		
+func _populate_help():
+	for action_name in InputMap.get_actions():
+		var parsed_name = action_name.split("control_", false)[0]
+		if parsed_name != action_name:		
+			for action in InputMap.get_action_list(action_name):			
+				if action is InputEventKey:
+					var key = OS.get_scancode_string(action.scancode)	
+					$Help/VBox/Content.text += "\n%s = %s" % [parsed_name, key]
+				if action is InputEventMouseButton:
+					var key = ""
+					match action.button_index:
+						1: key = "LMB"
+						2: key = "RMB"
+						3: key = "MMB"
+					$Help/VBox/Content.text += "\n%s = %s" % [parsed_name, key]
+				

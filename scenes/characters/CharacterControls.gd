@@ -2,7 +2,7 @@ extends Node2D
 class_name CharacterControls
 
 var WAYPOINT_OFFSET = 16.0
-var AVOID_MULT = 5.0
+var AVOID_MULT = 3.0
 
 var path = null
 
@@ -70,7 +70,9 @@ master func receive_command(command):
 			"SAY":
 				body.rpc("say", command.text)
 			"EQUIP":
-				body.inventory.rpc("equip", command.item_name)
+				if body.inventory.get_child_count() > 0:
+					var item_id = str(body.inventory.get_child(command.index).id)
+					body.inventory.rpc("equip", item_id)
 			"UNEQUIP":
 				body.inventory.rpc("equip", null)
 			"USE":				
@@ -81,7 +83,7 @@ master func receive_command(command):
 					body.inventory.rpc("drop_current", body.position)
 			"TAKE_NEAREST":
 				var nearest_item = sensors.get_nearest_item()
-				if nearest_item:
-					body.inventory.rpc("take", nearest_item)
+				if nearest_item:					
+					body.inventory.rpc("take", nearest_item.id)
 			_:
 				pass

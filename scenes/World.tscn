@@ -1,15 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://grey_style.tres" type="StyleBox" id=1]
 [ext_resource path="res://scenes/World.gd" type="Script" id=2]
-[ext_resource path="res://assets/characters/re_cv_sprites_v1_0_by_doubleleggy_d2hwj7w.png" type="Texture" id=3]
+[ext_resource path="res://ui/MainMenu.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/water.png" type="Texture" id=4]
 [ext_resource path="res://scenes/UI.gd" type="Script" id=5]
 [ext_resource path="res://scenes/Map.tscn" type="PackedScene" id=6]
-
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 3 )
-region = Rect2( 0, 0, 32, 32 )
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 1.0
@@ -33,145 +29,8 @@ region_rect = Rect2( 0, 0, 1024, 640 )
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource( 5 )
 
-[node name="Menu" type="PanelContainer" parent="UI"]
+[node name="MainMenu" parent="UI" instance=ExtResource( 3 )]
 visible = false
-anchor_left = 0.4
-anchor_top = 0.2
-anchor_right = 0.6
-anchor_bottom = 0.6
-margin_left = 0.399994
-margin_right = 14.6
-margin_bottom = 44.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBox" type="VBoxContainer" parent="UI/Menu"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 212.0
-margin_bottom = 301.0
-alignment = 2
-
-[node name="Label" type="Label" parent="UI/Menu/VBox"]
-margin_right = 205.0
-margin_bottom = 14.0
-size_flags_vertical = 2
-text = "MENU"
-align = 1
-
-[node name="HSeparator" type="HSeparator" parent="UI/Menu/VBox"]
-margin_top = 18.0
-margin_right = 205.0
-margin_bottom = 22.0
-
-[node name="Label3" type="Label" parent="UI/Menu/VBox"]
-margin_top = 26.0
-margin_right = 205.0
-margin_bottom = 40.0
-text = "Server Address:"
-
-[node name="ServerAddress" type="LineEdit" parent="UI/Menu/VBox"]
-margin_top = 44.0
-margin_right = 205.0
-margin_bottom = 68.0
-text = "127.0.0.1:9876"
-
-[node name="StartServer" type="Button" parent="UI/Menu/VBox"]
-margin_top = 72.0
-margin_right = 205.0
-margin_bottom = 92.0
-text = "start server"
-
-[node name="HSeparator2" type="HSeparator" parent="UI/Menu/VBox"]
-margin_top = 96.0
-margin_right = 205.0
-margin_bottom = 100.0
-
-[node name="Label2" type="Label" parent="UI/Menu/VBox"]
-margin_top = 104.0
-margin_right = 205.0
-margin_bottom = 118.0
-text = "Player Name:"
-
-[node name="HBox" type="HBoxContainer" parent="UI/Menu/VBox"]
-margin_top = 122.0
-margin_right = 205.0
-margin_bottom = 146.0
-
-[node name="PlayerName" type="LineEdit" parent="UI/Menu/VBox/HBox"]
-margin_right = 137.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-
-[node name="Randomize" type="Button" parent="UI/Menu/VBox/HBox"]
-margin_left = 141.0
-margin_right = 205.0
-margin_bottom = 24.0
-text = "Random"
-
-[node name="PlayerSelection" type="HBoxContainer" parent="UI/Menu/VBox"]
-margin_top = 150.0
-margin_right = 205.0
-margin_bottom = 214.0
-alignment = 2
-
-[node name="Appearance" type="TextureRect" parent="UI/Menu/VBox/PlayerSelection"]
-margin_right = 89.0
-margin_bottom = 64.0
-rect_min_size = Vector2( 64, 64 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = SubResource( 1 )
-expand = true
-stretch_mode = 5
-
-[node name="PreviousChar" type="Button" parent="UI/Menu/VBox/PlayerSelection"]
-margin_left = 93.0
-margin_right = 113.0
-margin_bottom = 20.0
-size_flags_vertical = 0
-text = "<"
-
-[node name="NextChar" type="Button" parent="UI/Menu/VBox/PlayerSelection"]
-margin_left = 117.0
-margin_right = 137.0
-margin_bottom = 20.0
-size_flags_vertical = 0
-text = ">"
-
-[node name="Randomize" type="Button" parent="UI/Menu/VBox/PlayerSelection"]
-margin_left = 141.0
-margin_right = 205.0
-margin_bottom = 20.0
-size_flags_vertical = 0
-text = "Random"
-
-[node name="JoinGame" type="Button" parent="UI/Menu/VBox"]
-margin_top = 218.0
-margin_right = 205.0
-margin_bottom = 238.0
-text = "join game"
-
-[node name="Localgame" type="Button" parent="UI/Menu/VBox"]
-margin_top = 242.0
-margin_right = 205.0
-margin_bottom = 262.0
-text = "local game"
-
-[node name="HSeparator3" type="HSeparator" parent="UI/Menu/VBox"]
-margin_top = 266.0
-margin_right = 205.0
-margin_bottom = 270.0
-
-[node name="Exit" type="Button" parent="UI/Menu/VBox"]
-margin_top = 274.0
-margin_right = 205.0
-margin_bottom = 294.0
-text = "exit"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Console" type="VBoxContainer" parent="UI"]
 anchor_left = 0.01
@@ -198,6 +57,42 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Help" type="PanelContainer" parent="UI"]
+visible = false
+anchor_left = 0.4
+anchor_top = 0.2
+anchor_right = 0.6
+anchor_bottom = 0.7
+margin_right = 14.0
+margin_bottom = 14.0
+custom_styles/panel = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBox" type="VBoxContainer" parent="UI/Help"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 213.8
+margin_bottom = 329.0
+
+[node name="Label" type="Label" parent="UI/Help/VBox"]
+margin_right = 208.0
+margin_bottom = 14.0
+text = "CONTROLS"
+align = 1
+
+[node name="HSeparator" type="HSeparator" parent="UI/Help/VBox"]
+margin_top = 18.0
+margin_right = 208.0
+margin_bottom = 22.0
+
+[node name="Content" type="RichTextLabel" parent="UI/Help/VBox"]
+margin_top = 26.0
+margin_right = 208.0
+margin_bottom = 324.0
+size_flags_vertical = 3
+
 [node name="PlayerCamera" type="Position2D" parent="."]
 position = Vector2( 512, 320 )
 __meta__ = {
@@ -213,12 +108,3 @@ input_pickable = false
 
 [node name="Circle" type="CollisionShape2D" parent="MouseLocation"]
 shape = SubResource( 2 )
-
-[connection signal="pressed" from="UI/Menu/VBox/StartServer" to="UI" method="_on_StartServer_pressed"]
-[connection signal="pressed" from="UI/Menu/VBox/HBox/Randomize" to="UI" method="_on_Randomize_pressed"]
-[connection signal="pressed" from="UI/Menu/VBox/PlayerSelection/PreviousChar" to="UI" method="_on_PreviousChar_pressed"]
-[connection signal="pressed" from="UI/Menu/VBox/PlayerSelection/NextChar" to="UI" method="_on_NextChar_pressed"]
-[connection signal="pressed" from="UI/Menu/VBox/PlayerSelection/Randomize" to="UI" method="_on_RandomizeTemplate_pressed"]
-[connection signal="pressed" from="UI/Menu/VBox/JoinGame" to="UI" method="_on_JoinGame_pressed"]
-[connection signal="pressed" from="UI/Menu/VBox/Localgame" to="UI" method="_on_Localgame_pressed"]
-[connection signal="pressed" from="UI/Menu/VBox/Exit" to="UI" method="_on_Exit_pressed"]

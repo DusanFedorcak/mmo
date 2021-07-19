@@ -1,5 +1,9 @@
 extends Node
 
+var item_scenes = {
+	Gun = preload("res://scenes/items/Gun.tscn")
+}
+
 var names = null
 
 const PASTEL_PALETTE = [
