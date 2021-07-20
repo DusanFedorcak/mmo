@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/Navigation.gd" type="Script" id=1]
 [ext_resource path="res://assets/tilesets/terrains.tres" type="TileSet" id=2]
@@ -6,6 +6,9 @@
 [ext_resource path="res://assets/tilesets/obstacles.tres" type="TileSet" id=4]
 [ext_resource path="res://scenes/Map.gd" type="Script" id=5]
 [ext_resource path="res://scenes/items/Gun.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/items/Rifle.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/items/Potion.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/items/Sword.tscn" type="PackedScene" id=9]
 
 [node name="Map" type="YSort"]
 script = ExtResource( 5 )
@@ -50,6 +53,30 @@ position = Vector2( 849.374, 563.022 )
 
 [node name="TestGun4" parent="Items" instance=ExtResource( 6 )]
 position = Vector2( 403.362, 560.502 )
+
+[node name="TestRifle" parent="Items" instance=ExtResource( 7 )]
+position = Vector2( 895.695, 399.303 )
+
+[node name="TestRifle2" parent="Items" instance=ExtResource( 7 )]
+position = Vector2( 486.776, 65.4024 )
+
+[node name="Potion" parent="Items" instance=ExtResource( 8 )]
+position = Vector2( 925.609, 143.154 )
+
+[node name="Potion5" parent="Items" instance=ExtResource( 8 )]
+position = Vector2( 163.603, 263.118 )
+
+[node name="Potion2" parent="Items" instance=ExtResource( 8 )]
+position = Vector2( 445.099, 352.41 )
+
+[node name="Potion3" parent="Items" instance=ExtResource( 8 )]
+position = Vector2( 211.231, 432.273 )
+
+[node name="Potion4" parent="Items" instance=ExtResource( 8 )]
+position = Vector2( 911.531, 521.945 )
+
+[node name="Sword" parent="Items" instance=ExtResource( 9 )]
+position = Vector2( 617.515, 541.695 )
 
 [node name="Characters" type="YSort" parent="."]
 

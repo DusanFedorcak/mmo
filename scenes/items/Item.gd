@@ -9,7 +9,7 @@ enum State {
 
 var id = -1
 #TODO: find better way how to reference a scene by name
-var scene = null
+export var scene = ""
 export(State) var state = State.DROPPED setget set_state
 
 
@@ -20,15 +20,18 @@ static func create_from_info(info):
 	return item
 
 
-func _init():	
+func _init():
 	id = get_instance_id()
 	
 
 func _ready():	
+	assert(scene, "Item scene not filled")	
 	name = str(id)
 
 
 func dump_info():
+	# This method and the `setup_from_info()` counterpart 
+	# assures that the item node can be correctly recreated on a client by passing the `info` dict.
 	return {
 		scene = scene,
 		id = id,
@@ -46,7 +49,7 @@ func setup_from_info(info):
 	
 	
 func use(by_body: Character):
-	pass
+	return false
 	
 
 func set_state(s):

@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/items/Gun.tscn" type="PackedScene" id=1]
+[ext_resource path="res://assets/items/Sword.atlastex" type="Texture" id=2]
+[ext_resource path="res://scenes/items/Sword.gd" type="Script" id=3]
+
+[node name="Sword" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+scene = "Sword"
+aim_spread = 0.0
+cooldown = 0.5
+damage = 50.0
+
+[node name="EquipIcon" parent="." index="1"]
+texture = ExtResource( 2 )
+
+[node name="ShootLine" parent="." index="2"]
+cast_to = Vector2( 40, 0 )
+
+[node name="GroundIcon" parent="." index="4"]
+texture = ExtResource( 2 )

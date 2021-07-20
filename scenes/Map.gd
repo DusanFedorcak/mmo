@@ -109,6 +109,7 @@ remote func add_character(character_info):
 	
 	if character.player_id == get_tree().get_network_unique_id():
 		Globals.world.player = character		
+		character.setup_for_player()
 		
 	return character
 	

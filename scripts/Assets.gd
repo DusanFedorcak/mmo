@@ -1,11 +1,5 @@
 extends Node
 
-var item_scenes = {
-	Gun = preload("res://scenes/items/Gun.tscn")
-}
-
-var names = null
-
 const PASTEL_PALETTE = [
 	Color("ffadad"),
 	Color("ffd6a5"),
@@ -26,14 +20,26 @@ const CHARACTER_FILES = [
 	"re_side_character_sprites_v1_0_by_doubleleggy_d2hz61y.png",
 	"visoes_3_sprites_by_doubleleggy_d2l91ct.png",	
 ]
+
+# there might be a better way how to dynamically register all items
+const ITEMS = [
+	"Gun", "Rifle", "Potion", "Sword"
+]
+
+var item_scenes = {}
 var character_sprites = []
+var names = null
+
 
 func _ready():
 	randomize()
 	for file in CHARACTER_FILES:
 		load_characters_from_texture("res://assets/characters/" + file)
-	
-	
+
+	for item in ITEMS:
+		item_scenes[item] = load("res://scenes/items/%s.tscn" % item)
+
+
 func get_random_name():
 	if not names:
 		names = _read_names()
@@ -90,6 +96,7 @@ func _load_character_sprites(texture: Texture, origin: Vector2):
 	
 
 func get_files(path, extension=""):
+	# WARNING!, this method do not work in the exported game!
 	var files = []
 	var dir = Directory.new()
 	dir.open(path)

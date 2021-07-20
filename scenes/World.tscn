@@ -2,12 +2,12 @@
 
 [ext_resource path="res://grey_style.tres" type="StyleBox" id=1]
 [ext_resource path="res://scenes/World.gd" type="Script" id=2]
-[ext_resource path="res://ui/MainMenu.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/ui/MainMenu.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/water.png" type="Texture" id=4]
 [ext_resource path="res://scenes/UI.gd" type="Script" id=5]
 [ext_resource path="res://scenes/Map.tscn" type="PackedScene" id=6]
 
-[sub_resource type="CircleShape2D" id=2]
+[sub_resource type="CircleShape2D" id=1]
 radius = 1.0
 
 [node name="World" type="Node2D"]
@@ -30,7 +30,6 @@ region_rect = Rect2( 0, 0, 1024, 640 )
 script = ExtResource( 5 )
 
 [node name="MainMenu" parent="UI" instance=ExtResource( 3 )]
-visible = false
 
 [node name="Console" type="VBoxContainer" parent="UI"]
 anchor_left = 0.01
@@ -63,9 +62,6 @@ anchor_left = 0.4
 anchor_top = 0.2
 anchor_right = 0.6
 anchor_bottom = 0.7
-margin_right = 14.0
-margin_bottom = 14.0
-custom_styles/panel = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -107,4 +103,4 @@ smoothing_enabled = true
 input_pickable = false
 
 [node name="Circle" type="CollisionShape2D" parent="MouseLocation"]
-shape = SubResource( 2 )
+shape = SubResource( 1 )

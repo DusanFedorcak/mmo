@@ -3,7 +3,7 @@
 [ext_resource path="res://scenes/effects/FadingFX.tscn" type="PackedScene" id=1]
 
 [node name="HitFX" instance=ExtResource( 1 )]
-fade_time = 0.4
+duration = 0.4
 
 [node name="Line2D" type="Line2D" parent="." index="1"]
 points = PoolVector2Array( -4, -4, 4, 4 )

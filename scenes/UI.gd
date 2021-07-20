@@ -1,13 +1,16 @@
 extends CanvasLayer
 
-
 onready var world_node = $".."
+
+var equip_actions = []
 	
 
 func _ready():
 	Log.register_target(self)
 	$Help.visible = false
 	_populate_help()
+	for i in range(5):
+		equip_actions.append("control_equip_%d" % i)
 
 
 func _process(delta):
@@ -37,17 +40,18 @@ func _unhandled_input(_event):
 		if _event.is_action_pressed("control_turn_and_use"):						
 			commands.append({
 				name = "TURN_TO",
-				position = world_node.get_global_mouse_position()
+				direction = world_node.get_global_mouse_position() - world_node.player.position
 			})
 			commands.append({
 				name = "USE",
 			})
-								
-		if _event.is_action_pressed("control_equip_0"):			
-			commands.append({
-				name = "EQUIP",
-				index = 0,
-			})	
+				
+		for i in range(len(equip_actions)):				
+			if _event.is_action_pressed(equip_actions[i]):			
+				commands.append({
+					name = "EQUIP",
+					index = i,
+				})	
 			
 		if _event.is_action_pressed("control_unequip"):		
 			commands.append({
@@ -62,6 +66,12 @@ func _unhandled_input(_event):
 		if _event.is_action_pressed("control_take_item"):					
 			commands.append({
 				name = "TAKE_NEAREST",					
+			})
+		
+		if _event.is_action_pressed("control_speak"):					
+			commands.append({
+				name = "SAY",					
+				text = CharacterAI.bored_lines[randi() % len(CharacterAI.bored_lines)]
 			})						
 						
 		for command in commands:
@@ -82,14 +92,13 @@ func _populate_help():
 		var parsed_name = action_name.split("control_", false)[0]
 		if parsed_name != action_name:		
 			for action in InputMap.get_action_list(action_name):			
+				var key = ""
 				if action is InputEventKey:
-					var key = OS.get_scancode_string(action.scancode)	
-					$Help/VBox/Content.text += "\n%s = %s" % [parsed_name, key]
-				if action is InputEventMouseButton:
-					var key = ""
+					key = OS.get_scancode_string(action.scancode)	
+				if action is InputEventMouseButton:					
 					match action.button_index:
 						1: key = "LMB"
 						2: key = "RMB"
-						3: key = "MMB"
-					$Help/VBox/Content.text += "\n%s = %s" % [parsed_name, key]
+						3: key = "MMB"					
+				$Help/VBox/Content.text += "%s = %s\n" % [key, parsed_name]				
 				

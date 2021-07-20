@@ -47,7 +47,6 @@ func _get_nearest_waypoint():
 				path.remove(0)
 				if path.empty():
 					path = null
-
 					return null
 	else:
 		return null	
@@ -56,7 +55,8 @@ func _get_nearest_waypoint():
 # --- REMOTE FUNCTIONS ---
 
 
-master func receive_command(command):	
+master func receive_command(command):
+	# This call goes to server only!
 	if body.state != Character.State.DEAD:
 		match command.name:
 			"MOVE":						
@@ -66,21 +66,21 @@ master func receive_command(command):
 				$WorldIcons/Path.points = path			
 			"TURN_TO":						
 				body.state = Character.State.IDLE
-				body.facing_direction = (command.position - body.position).normalized()
+				body.facing_direction = command.direction.normalized()
 			"SAY":
 				body.rpc("say", command.text)
 			"EQUIP":
 				if body.inventory.get_child_count() > 0:
-					var item_id = str(body.inventory.get_child(command.index).id)
+					var item = body.inventory.get_child(command.index)
+					var item_id = str(item.id) if item else null
 					body.inventory.rpc("equip", item_id)
 			"UNEQUIP":
 				body.inventory.rpc("equip", null)
-			"USE":				
-				if body.inventory.current_item:
-					body.inventory.current_item.use(body)
+			"USE":
+				body.inventory.use_current_item()				
 			"DROP":
 				if body.inventory.current_item:
-					body.inventory.rpc("drop_current", body.position)
+					body.inventory.rpc("drop_current_item", body.position)
 			"TAKE_NEAREST":
 				var nearest_item = sensors.get_nearest_item()
 				if nearest_item:					

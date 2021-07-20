@@ -12,7 +12,6 @@ script = ExtResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
-disabled = true
 
 [node name="EquipIcon" type="Sprite" parent="."]
 visible = false

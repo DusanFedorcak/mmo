@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scenes/characters/Character.gd" type="Script" id=1]
 [ext_resource path="res://scenes/characters/CharacterControls.gd" type="Script" id=2]
@@ -7,15 +7,17 @@
 [ext_resource path="res://assets/characters/char_frames_1.tres" type="SpriteFrames" id=5]
 [ext_resource path="res://scenes/characters/CharacterAI.gd" type="Script" id=6]
 [ext_resource path="res://assets/fonts/lucasarts-scumm-outline.fnt" type="BitmapFont" id=7]
+[ext_resource path="res://grey_style.tres" type="StyleBox" id=8]
 [ext_resource path="res://scenes/characters/CharacterSensors.gd" type="Script" id=9]
 [ext_resource path="res://scenes/effects/DeathTween.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/characters/CharacterInventory.gd" type="Script" id=11]
+[ext_resource path="res://assets/items/heart_shaded.png" type="Texture" id=12]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 4.0
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 400.0
+radius = 300.0
 
 [sub_resource type="CapsuleShape2D" id=3]
 radius = 12.0
@@ -40,7 +42,7 @@ script = ExtResource( 9 )
 input_pickable = false
 monitorable = false
 collision_layer = 0
-collision_mask = 10
+collision_mask = 26
 
 [node name="Circle" type="CollisionShape2D" parent="Sensors/Sight"]
 shape = SubResource( 2 )
@@ -135,6 +137,114 @@ visible = false
 z_index = -1
 z_as_relative = false
 texture = ExtResource( 3 )
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="TopPanel" type="MarginContainer" parent="UI"]
+anchor_left = 0.4
+anchor_right = 0.6
+anchor_bottom = 0.08
+margin_left = 5.0
+margin_top = 5.0
+margin_right = -5.0
+margin_bottom = -5.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBox" type="VBoxContainer" parent="UI/TopPanel"]
+margin_right = 194.0
+margin_bottom = 41.0
+
+[node name="HealthBar" type="TextureRect" parent="UI/TopPanel/VBox"]
+margin_right = 100.0
+margin_bottom = 9.0
+rect_min_size = Vector2( 100, 9 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 2
+
+[node name="Inventory" type="HBoxContainer" parent="UI/TopPanel/VBox"]
+margin_top = 13.0
+margin_right = 194.0
+margin_bottom = 41.0
+size_flags_vertical = 3
+
+[node name="Panel_0" type="Panel" parent="UI/TopPanel/VBox/Inventory"]
+margin_right = 35.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+custom_styles/panel = ExtResource( 8 )
+
+[node name="TextureRect" type="TextureRect" parent="UI/TopPanel/VBox/Inventory/Panel_0"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel_1" type="Panel" parent="UI/TopPanel/VBox/Inventory"]
+margin_left = 39.0
+margin_right = 75.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+custom_styles/panel = ExtResource( 8 )
+
+[node name="TextureRect" type="TextureRect" parent="UI/TopPanel/VBox/Inventory/Panel_1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel_2" type="Panel" parent="UI/TopPanel/VBox/Inventory"]
+margin_left = 79.0
+margin_right = 114.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+custom_styles/panel = ExtResource( 8 )
+
+[node name="TextureRect" type="TextureRect" parent="UI/TopPanel/VBox/Inventory/Panel_2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel_3" type="Panel" parent="UI/TopPanel/VBox/Inventory"]
+margin_left = 118.0
+margin_right = 154.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+custom_styles/panel = ExtResource( 8 )
+
+[node name="TextureRect" type="TextureRect" parent="UI/TopPanel/VBox/Inventory/Panel_3"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel_4" type="Panel" parent="UI/TopPanel/VBox/Inventory"]
+margin_left = 158.0
+margin_right = 194.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+custom_styles/panel = ExtResource( 8 )
+
+[node name="TextureRect" type="TextureRect" parent="UI/TopPanel/VBox/Inventory/Panel_4"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [connection signal="area_entered" from="Picker" to="." method="_on_Picker_area_entered"]
 [connection signal="area_exited" from="Picker" to="." method="_on_Picker_area_exited"]

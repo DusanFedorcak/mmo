@@ -8,44 +8,51 @@ const NEAR_ITEM_DISTANCE = 30
 onready var body: Character = get_parent()
 var show_senses = false
 
-var characters: Dictionary = {
+var characters = {
 	"seen": {},
 	"near": {}
 }
 
-var items: Dictionary = {
+var items = {
 	"seen": {},
 	"near": {}
 }
 
-func tick():	
-	var near_bodies = $Sight.get_overlapping_bodies()
-	
+var effects = {}
+var processed_effects = {}
+
+var events = []
+
+
+func tick():
 	_clear_sensors()
-		
-	for other_body in near_bodies:
-		if other_body == body:			
-			continue					
-					
-		var direction = other_body.position - body.position
-		var angle = body.facing_direction.angle_to(direction)				
-		var in_sight = abs(angle) < FOV * 0.5
-		var dist2 = direction.length_squared()
-		
-		if other_body is Character:
-			if in_sight:
-				characters.seen[other_body.id] = _make_record(other_body, direction, angle)
-			if dist2 < NEAR_BODY_DISTANCE * NEAR_BODY_DISTANCE:
-				characters.near[other_body.id] = _make_record(other_body, direction, angle)		
-		elif other_body is Item:
-			if in_sight:
-				items.seen[other_body.id] = _make_record(other_body, direction, angle)
-			if dist2 < NEAR_ITEM_DISTANCE * NEAR_ITEM_DISTANCE:
-				items.near[other_body.id] = _make_record(other_body, direction, angle)		
+	if body.state != Character.State.DEAD:			
+		var near_bodies = $Sight.get_overlapping_bodies()				
+						
+		for other_body in near_bodies:
+			if other_body == body:			
+				continue					
+						
+			var direction = other_body.position - body.position
+			var angle = body.facing_direction.angle_to(direction)				
+			var in_sight = abs(angle) < FOV * 0.5
+			var dist2 = direction.length_squared()
 			
+			if other_body is Character:
+				if in_sight:
+					characters.seen[other_body.id] = _make_record(other_body, direction, angle)
+				if dist2 < NEAR_BODY_DISTANCE * NEAR_BODY_DISTANCE:
+					characters.near[other_body.id] = _make_record(other_body, direction, angle)		
+			elif other_body is Item:
+				if in_sight:					
+					items.seen[other_body.id] = _make_record(other_body, direction, angle)
+				if dist2 < NEAR_ITEM_DISTANCE * NEAR_ITEM_DISTANCE:
+					items.near[other_body.id] = _make_record(other_body, direction, angle)		
+			elif other_body is Effect:
+				effects[other_body.id] = _make_record(other_body, direction, angle)		
 				
-	if show_senses:
-		update()
+		if show_senses:
+			update()
 		
 
 func _clear_sensors():
@@ -53,6 +60,7 @@ func _clear_sensors():
 	characters.near.clear()
 	items.seen.clear()
 	items.near.clear()
+	effects.clear()
 	
 
 func _make_record(body, direction, angle):
@@ -62,6 +70,7 @@ func _make_record(body, direction, angle):
 		angle = angle,
 		distance = direction.length()
 	}
+		
 		
 func get_most_crowded_direction():
 	var result = Vector2.ZERO

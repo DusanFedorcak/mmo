@@ -9,7 +9,8 @@ var player_id = -1
 var char_name = "Name"
 var template = 0
 
-var health = 100
+const MAX_HEALTH = 100.0
+var health = MAX_HEALTH
 
 signal hit(gun, from_direction, at_point)
 
@@ -44,7 +45,8 @@ func _init():
 	id = get_instance_id()
 	
 
-func _ready():			
+func _ready():
+	$UI/TopPanel.visible = false	
 	name = str(id)
 	$CollisionShape.disabled = not Network.is_server
 	$Icons/Speaking.visible = false
@@ -63,6 +65,8 @@ func tick(delta):
 		
 
 func dump_info():
+	# This method and the `setup_from_info()` counterpart 
+	# assures that the character node can be correctly recreated on a client by passing the `info` dict.
 	var info = {
 		id = id, 
 		player_id = player_id,
@@ -100,6 +104,8 @@ func setup_from_info(info):
 	
 	
 func dump_state():
+	# This method and the `update_state()` counterpart 
+	# assures fact-paced unreliable update between server and client (usually for character movement)
 	return {					
 		state = state,		
 		facing_direction = facing_direction,
@@ -115,6 +121,10 @@ func update_state(_state):
 	motion_direction = _state.motion_direction
 	running = _state.runing
 	position = _state.position
+	
+
+func setup_for_player():
+	$UI/TopPanel.visible = true
 	
 	
 func _physics_process(delta):	
@@ -177,18 +187,20 @@ func _on_Picker_area_exited(area):
 			
 func _on_hit(gun, from_direction, at_point):			
 	if state != State.DEAD:
-		health -= gun.damage
+		health -= gun.damage		
+		rpc("set_health", health)	
+			
 		if health <= 0:		
 			state = State.DEAD
 			$CollisionShape.disabled = true
 			$HitBox/Circle.disabled = true
 			EventBus.emit_signal("character_died", id)			
 		else:
-			$AI.add_event({
+			$Sensors.events.append({
 				name = "HIT"
 			})
 									
-	rpc("show_hit", from_direction, at_point)		
+	rpc("show_hit", from_direction, at_point)
 	
 	
 # --- REMOTE FUNCTIONS ---
@@ -200,8 +212,13 @@ remotesync func say(text):
 	$Icons/Speaking/SpeakingTimer.wait_time = len(text.split(" ")) * 0.5
 	$Icons/Speaking/SpeakingTimer.start()
 	
+
+remotesync func set_health(value):
+	health = value
+	$UI/TopPanel/VBox/HealthBar.rect_min_size.x = health
 	
-remotesync func show_hit(from_direction, at_point):		
+	
+remotesync func show_hit(from_direction, at_point):			
 	var hit_fx = HitFXScene.instance()
 	hit_fx.z_index = 100
 	hit_fx.position = at_point
