@@ -23,7 +23,7 @@ func _process(delta):
 		$Map.send_state_update()
 		
 	if player:
-		$PlayerCamera.position = player.position
+		$PlayerCamera.position = lerp($PlayerCamera.position, player.position, 0.1).floor()
 		
 	$MouseLocation.position = get_global_mouse_position()
 

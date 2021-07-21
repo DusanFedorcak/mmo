@@ -30,6 +30,7 @@ region_rect = Rect2( 0, 0, 1024, 640 )
 script = ExtResource( 5 )
 
 [node name="MainMenu" parent="UI" instance=ExtResource( 3 )]
+visible = false
 
 [node name="Console" type="VBoxContainer" parent="UI"]
 anchor_left = 0.01
@@ -41,8 +42,8 @@ __meta__ = {
 }
 
 [node name="Output" type="RichTextLabel" parent="UI/Console"]
-margin_right = 296.0
-margin_bottom = 185.0
+margin_right = 278.0
+margin_bottom = 174.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/normal = ExtResource( 1 )
@@ -97,7 +98,6 @@ __meta__ = {
 
 [node name="Camera" type="Camera2D" parent="PlayerCamera"]
 current = true
-smoothing_enabled = true
 
 [node name="MouseLocation" type="Area2D" parent="."]
 input_pickable = false

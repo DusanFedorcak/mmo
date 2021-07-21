@@ -25,9 +25,8 @@ func _init():
 	
 
 func _ready():	
-	assert(scene, "Item scene not filled")	
+	assert(scene, "Item scene not filled")		
 	name = str(id)
-
 
 func dump_info():
 	# This method and the `setup_from_info()` counterpart 
