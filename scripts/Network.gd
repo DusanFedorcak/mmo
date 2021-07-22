@@ -10,10 +10,6 @@ var player_info = {}
 var my_info = null
 
 
-func _ready():
-	pass
-
-
 func _player_connected(id):
 	Log.info("Player %d connected." % id)	
 	
@@ -26,18 +22,16 @@ func _player_disconnected(id):
 func _connected_ok():	
 	Log.info("Connected to server.")
 	is_connected = true
-	rpc_id(1, "register_player", my_info)
-	pass
+	rpc_id(1, "register_player", my_info)	
 
 
 func _server_disconnected():
-	Log.info("Disconnected from server.")
-	pass # Server kicked us; show error and abort.
+	is_connected = false
+	Log.info("Disconnected from server.")	
 
 
-func _connected_fail():
-	Log.info("Connection failed.")
-	pass # Could not even connect to server; abort.
+func _connected_fail():	
+	Log.info("Connection failed.")	
 
 
 func create_server(port):		
@@ -70,7 +64,9 @@ func connect_server(player_name, player_template, address, port):
 
 
 func disconnect_network():
-	get_tree().network_peer = null
+	is_connected = false
+	is_server = false	
+	get_tree().network_peer = null	
 	
 
 # --- REMOTE FUNCTIONS ---

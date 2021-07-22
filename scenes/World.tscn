@@ -1,56 +1,33 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://grey_style.tres" type="StyleBox" id=1]
+[ext_resource path="res://assets/splash.png" type="Texture" id=1]
 [ext_resource path="res://scenes/World.gd" type="Script" id=2]
 [ext_resource path="res://scenes/ui/MainMenu.tscn" type="PackedScene" id=3]
-[ext_resource path="res://assets/water.png" type="Texture" id=4]
 [ext_resource path="res://scenes/UI.gd" type="Script" id=5]
 [ext_resource path="res://scenes/Map.tscn" type="PackedScene" id=6]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 1.0
-
 [node name="World" type="Node2D"]
 script = ExtResource( 2 )
-
-[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
-
-[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
-motion_mirroring = Vector2( 1024, 640 )
-
-[node name="Water" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
-texture = ExtResource( 4 )
-centered = false
-region_enabled = true
-region_rect = Rect2( 0, 0, 1024, 640 )
 
 [node name="Map" parent="." instance=ExtResource( 6 )]
 
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource( 5 )
 
-[node name="MainMenu" parent="UI" instance=ExtResource( 3 )]
+[node name="Splash" type="TextureRect" parent="UI"]
 visible = false
-
-[node name="Console" type="VBoxContainer" parent="UI"]
-anchor_left = 0.01
-anchor_top = 0.7
-anchor_right = 0.3
-anchor_bottom = 0.99
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Output" type="RichTextLabel" parent="UI/Console"]
-margin_right = 278.0
-margin_bottom = 174.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/normal = ExtResource( 1 )
-text = "Welcome..."
-scroll_following = true
+[node name="MainMenu" parent="UI" instance=ExtResource( 3 )]
 
 [node name="Fps" type="Label" parent="UI"]
+margin_left = 5.0
+margin_top = 5.0
 margin_right = 40.0
 margin_bottom = 14.0
 __meta__ = {
@@ -58,53 +35,34 @@ __meta__ = {
 }
 
 [node name="Help" type="PanelContainer" parent="UI"]
-visible = false
-anchor_left = 0.4
 anchor_top = 0.2
-anchor_right = 0.6
-anchor_bottom = 0.7
+anchor_right = 0.2
+anchor_bottom = 0.75
+margin_left = 5.0
+margin_right = -5.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBox" type="VBoxContainer" parent="UI/Help"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 213.8
-margin_bottom = 329.0
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 175.0
+margin_bottom = 323.0
 
 [node name="Label" type="Label" parent="UI/Help/VBox"]
-margin_right = 208.0
+margin_right = 168.0
 margin_bottom = 14.0
 text = "CONTROLS"
 align = 1
 
 [node name="HSeparator" type="HSeparator" parent="UI/Help/VBox"]
 margin_top = 18.0
-margin_right = 208.0
+margin_right = 168.0
 margin_bottom = 22.0
 
 [node name="Content" type="RichTextLabel" parent="UI/Help/VBox"]
 margin_top = 26.0
-margin_right = 208.0
-margin_bottom = 324.0
+margin_right = 168.0
+margin_bottom = 316.0
 size_flags_vertical = 3
-
-[node name="PlayerCamera" type="Position2D" parent="."]
-position = Vector2( 378.427, 277.346 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Camera" type="Camera2D" parent="PlayerCamera"]
-current = true
-drag_margin_left = 0.0
-drag_margin_top = 0.0
-drag_margin_right = 0.0
-drag_margin_bottom = 0.0
-
-[node name="MouseLocation" type="Area2D" parent="."]
-input_pickable = false
-
-[node name="Circle" type="CollisionShape2D" parent="MouseLocation"]
-shape = SubResource( 1 )

@@ -104,7 +104,7 @@ func _update_state():
 	if body.state == Character.State.IDLE and randf() < 0.01:
 		body_controls.receive_command({
 			name = "MOVE",
-			position =  Globals.world.get_node("Map/Navigation").get_random_reachable_cell(body.position),				
+			position = get_node("/root/World/Map/Navigation").get_random_reachable_cell(body.position),				
 		})
 		
 	if body.state == Character.State.IDLE and randf() < 0.005:			

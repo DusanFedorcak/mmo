@@ -69,14 +69,13 @@ remotesync func consume_current_item():
 		
 
 remotesync func take(item_id):	
-	var item = Globals.world.get_node_or_null("Map/Items/" + str(item_id))
+	var item = get_node_or_null("/root/World/Map/Items/" + str(item_id))
 	if item:
 		var parent = item.get_parent()
 		parent.remove_child(item)
 		item.position = Vector2.ZERO
 		item.state = Item.State.IN_INVENTORY
-		add_child(item)
-		#equip(item.name)
+		add_child(item)		
 		_update_top_panel()
 	else:
 		Log.error("Node not found %s" % str(item_id))

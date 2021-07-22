@@ -1,15 +1,27 @@
 extends YSort
 
-var HitFXScene = preload("res://scenes/effects/HitFX.tscn")
-const CharacterScene = preload("res://scenes/characters/Character.tscn")
-
 signal hit(gun, from_direction, at_point)
+
+const HitFXScene = preload("res://scenes/effects/HitFX.tscn")
+const CharacterScene = preload("res://scenes/characters/Character.tscn")
 
 
 func _ready():
 	connect("hit", self, "_on_hit")
 	EventBus.connect("item_dropped", self, "_on_item_dropped")
 	EventBus.connect("fx_created", self, "_on_fx_created")
+	
+
+func _process(delta):
+	if Network.is_server:		
+		for character in $Characters.get_children():
+			character.tick(delta)					
+		_send_state_update()
+		
+	if $UI.player:
+		$PlayerCamera.update_camera($UI.player.position)
+		
+	$MouseLocation.position = get_global_mouse_position()
 	
 
 func setup_for_server():
@@ -59,7 +71,7 @@ func spawn_player(network_id, player_info):
 	rpc("add_character", new_player_char.dump_info())	
 		
 		
-func send_state_update():	
+func _send_state_update():	
 	var game_state = {}
 	#OPTIMIZE SENT STATE TO SCREEN PROXIMITY objects
 	for char_node in $Characters.get_children():
@@ -108,7 +120,7 @@ remote func add_character(character_info):
 	$Characters.add_child(character)
 	
 	if character.player_id == get_tree().get_network_unique_id():
-		Globals.world.player = character		
+		$UI.player = character		
 		character.setup_for_player()
 		
 	return character

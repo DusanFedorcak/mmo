@@ -78,7 +78,6 @@ Log="*res://scripts/Log.gd"
 EventBus="*res://scripts/EventBus.gd"
 Network="*res://scripts/Network.gd"
 Assets="*res://scripts/Assets.gd"
-Globals="*res://scripts/Globals.gd"
 
 [display]
 

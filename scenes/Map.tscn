@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/Navigation.gd" type="Script" id=1]
 [ext_resource path="res://assets/tilesets/terrains.tres" type="TileSet" id=2]
@@ -9,9 +9,29 @@
 [ext_resource path="res://scenes/items/Rifle.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/items/Potion.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/items/Sword.tscn" type="PackedScene" id=9]
+[ext_resource path="res://assets/water.png" type="Texture" id=10]
+[ext_resource path="res://scenes/MapUI.gd" type="Script" id=11]
+[ext_resource path="res://scenes/PlayerCamera.gd" type="Script" id=12]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 1.0
 
 [node name="Map" type="YSort"]
 script = ExtResource( 5 )
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource( 11 )
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 1024, 640 )
+
+[node name="Water" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+texture = ExtResource( 10 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 1024, 640 )
 
 [node name="Terrain" type="TileMap" parent="."]
 z_index = -10
@@ -105,3 +125,20 @@ z_index = 5
 
 [node name="Center" type="Position2D" parent="Navigation"]
 position = Vector2( 379.236, 277.182 )
+
+[node name="PlayerCamera" type="Position2D" parent="."]
+position = Vector2( 378.427, 277.346 )
+script = ExtResource( 12 )
+
+[node name="Camera" type="Camera2D" parent="PlayerCamera"]
+current = true
+drag_margin_left = 0.0
+drag_margin_top = 0.0
+drag_margin_right = 0.0
+drag_margin_bottom = 0.0
+
+[node name="MouseLocation" type="Area2D" parent="."]
+input_pickable = false
+
+[node name="Circle" type="CollisionShape2D" parent="MouseLocation"]
+shape = SubResource( 1 )

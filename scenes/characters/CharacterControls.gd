@@ -60,7 +60,7 @@ master func receive_command(command):
 	if body.state != Character.State.DEAD:
 		match command.name:
 			"MOVE":						
-				path = Globals.world.get_node("Map/Navigation").get_simple_path(body.position, command.position)				
+				path = get_node("/root/World/Map/Navigation").get_simple_path(body.position, command.position)				
 				body.state = Character.State.MOVING
 				$WorldIcons/Target.position = command.position
 				$WorldIcons/Path.points = path			
