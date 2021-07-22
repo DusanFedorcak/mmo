@@ -23,45 +23,42 @@ func parse_server_address():
 	return { address = parsed[0], port = parsed[1].to_int()}
 	
 
-func _on_StartServer_pressed():
-	if not world_node.player:		
-		$VBox/JoinGame.disabled = true
-		$VBox/StartServer.disabled = true
-		$VBox/Localgame.disabled = true
-		visible = false
-		Network.create_server(parse_server_address().port)
-		world_node.setup_for_server()
+func _on_StartServer_pressed():	
+	$VBox/JoinGame.disabled = true
+	$VBox/StartServer.disabled = true
+	$VBox/Localgame.disabled = true
+	visible = false
+	Network.create_server(parse_server_address().port)
+	world_node.setup_for_server()
 		
 		
 func _on_Localgame_pressed():
-	if not world_node.player:		
-		$VBox/JoinGame.disabled = true
-		$VBox/StartServer.disabled = true
-		$VBox/Localgame.disabled = true
-		visible = false
+	$VBox/JoinGame.disabled = true
+	$VBox/StartServer.disabled = true
+	$VBox/Localgame.disabled = true
+	visible = false
 
-		var server_info = parse_server_address()
-		Network.create_server(parse_server_address().port)
-		world_node.setup_for_server()
-		EventBus.emit_signal("player_registered", 1, { 
-			name = $VBox/HBox/PlayerName.text,
-			template = player_template
-		})
+	var server_info = parse_server_address()
+	Network.create_server(parse_server_address().port)
+	world_node.setup_for_server()
+	EventBus.emit_signal("player_registered", 1, { 
+		name = $VBox/HBox/PlayerName.text,
+		template = player_template
+	})
 
 
-func _on_JoinGame_pressed():
-	if not world_node.player:		
-		$VBox/JoinGame.disabled = true
-		$VBox/StartServer.disabled = true
-		$VBox/Localgame.disabled = true
-		visible = false
+func _on_JoinGame_pressed():		
+	$VBox/JoinGame.disabled = true
+	$VBox/StartServer.disabled = true
+	$VBox/Localgame.disabled = true
+	visible = false
 
-		var server_info = parse_server_address()
-		Network.connect_server(
-			$VBox/HBox/PlayerName.text, player_template, server_info.address, server_info.port
-		)
-		world_node.setup_for_client()
-		world_node.setup_for_client()
+	var server_info = parse_server_address()
+	Network.connect_server(
+		$VBox/HBox/PlayerName.text, player_template, server_info.address, server_info.port
+	)
+	world_node.setup_for_client()
+	world_node.setup_for_client()
 		
 
 func _on_Randomize_pressed():

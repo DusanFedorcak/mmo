@@ -183,3 +183,7 @@ control_unequip={
 [physics]
 
 common/enable_pause_aware_picking=true
+
+[rendering]
+
+quality/dynamic_fonts/use_oversampling=false

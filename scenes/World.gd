@@ -1,7 +1,11 @@
 extends Node2D
 class_name WorldNode
 
+const CAMERA_MARGIN = 10
+const CAMERA_SMOOTHING = 0.05
+
 var player = null
+var camera_true_position = Vector2.ZERO
 
 
 func _ready():
@@ -23,7 +27,11 @@ func _process(delta):
 		$Map.send_state_update()
 		
 	if player:
-		$PlayerCamera.position = lerp($PlayerCamera.position, player.position, 0.1).floor()
+		var offset = player.position - $PlayerCamera.position
+		var dist2 = offset.length_squared()
+		if dist2 > CAMERA_MARGIN * CAMERA_MARGIN:
+			camera_true_position += CAMERA_SMOOTHING * offset
+			$PlayerCamera.position = camera_true_position.floor()
 		
 	$MouseLocation.position = get_global_mouse_position()
 

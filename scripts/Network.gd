@@ -50,7 +50,7 @@ func create_server(port):
 	get_tree().network_peer = peer
 	is_server = true
 	is_connected = true
-	
+		
 	
 func connect_server(player_name, player_template, address, port):
 	Log.info("Joining server %s:%d ..." % [address, port])
