@@ -33,7 +33,7 @@ var facing_direction: Vector2 = Vector2.DOWN
 var motion_direction: Vector2 = Vector2.ZERO
 var running = false
 
-var HitFXScene = preload("res://scenes/effects/HitFX.tscn")
+const HitFXScene = preload("res://scenes/effects/HitFX.tscn")
 
 
 func set_motion(direction, _running=false):
@@ -46,8 +46,8 @@ func _init():
 	
 
 func _ready():
-	$UI/TopPanel.visible = false	
 	name = str(id)
+	$UI/TopPanel.visible = false
 	$CollisionShape.disabled = not Network.is_server
 	$Icons/Speaking.visible = false
 	color = Assets.get_random_color()

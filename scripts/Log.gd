@@ -23,4 +23,7 @@ func warning(message):
 
 func error(message):
 	send_to_targets("[error]: %s" % message)
+	
 
+func custom(level, message):
+	send_to_targets("[%s]: %s" % [level, message])

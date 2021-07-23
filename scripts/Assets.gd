@@ -26,6 +26,10 @@ const ITEMS = [
 	"Gun", "Rifle", "Potion", "Sword"
 ]
 
+const MAPS = {
+	"test_map": preload("res://scenes/Map.tscn")
+}
+
 var item_scenes = {}
 var character_sprites = []
 var names = null
@@ -96,7 +100,7 @@ func _load_character_sprites(texture: Texture, origin: Vector2):
 	
 
 func get_files(path, extension=""):
-	# WARNING!, this method do not work in the exported game!
+	# WARNING!, this method do not work in the exported game as all resource pathss get changed!
 	var files = []
 	var dir = Directory.new()
 	dir.open(path)

@@ -42,21 +42,16 @@ margin_top = 18.0
 margin_right = 180.0
 margin_bottom = 22.0
 
-[node name="Label2" type="Label" parent="Menu/VBox"]
+[node name="HBox" type="HBoxContainer" parent="Menu/VBox"]
 margin_top = 26.0
 margin_right = 180.0
-margin_bottom = 40.0
-text = "Player Name:"
-
-[node name="HBox" type="HBoxContainer" parent="Menu/VBox"]
-margin_top = 44.0
-margin_right = 180.0
-margin_bottom = 68.0
+margin_bottom = 50.0
 
 [node name="PlayerName" type="LineEdit" parent="Menu/VBox/HBox"]
 margin_right = 112.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
+placeholder_text = "Player Name"
 caret_blink = true
 caret_blink_speed = 0.5
 
@@ -67,9 +62,9 @@ margin_bottom = 24.0
 text = "Random"
 
 [node name="PlayerSelection" type="HBoxContainer" parent="Menu/VBox"]
-margin_top = 72.0
+margin_top = 54.0
 margin_right = 180.0
-margin_bottom = 136.0
+margin_bottom = 118.0
 alignment = 2
 
 [node name="Appearance" type="TextureRect" parent="Menu/VBox/PlayerSelection"]
@@ -104,47 +99,81 @@ size_flags_vertical = 0
 text = "Random"
 
 [node name="HSeparator" type="HSeparator" parent="Menu/VBox"]
-margin_top = 140.0
+margin_top = 122.0
 margin_right = 180.0
-margin_bottom = 144.0
+margin_bottom = 126.0
 
-[node name="Label3" type="Label" parent="Menu/VBox"]
-margin_top = 148.0
+[node name="HBox2" type="HBoxContainer" parent="Menu/VBox"]
+margin_top = 130.0
 margin_right = 180.0
-margin_bottom = 162.0
-text = "Server Address:"
+margin_bottom = 154.0
 
-[node name="ServerAddress" type="LineEdit" parent="Menu/VBox"]
-margin_top = 166.0
+[node name="Label3" type="Label" parent="Menu/VBox/HBox2"]
+margin_top = 5.0
+margin_right = 56.0
+margin_bottom = 19.0
+text = "Address:"
+
+[node name="ServerAddress" type="LineEdit" parent="Menu/VBox/HBox2"]
+margin_left = 60.0
 margin_right = 180.0
-margin_bottom = 190.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
 text = "127.0.0.1:9876"
 caret_blink = true
 caret_blink_speed = 0.5
 
-[node name="StartServer" type="Button" parent="Menu/VBox"]
-margin_top = 194.0
-margin_right = 180.0
-margin_bottom = 214.0
-text = "start server"
-
 [node name="JoinGame" type="Button" parent="Menu/VBox"]
-margin_top = 218.0
+margin_top = 158.0
 margin_right = 180.0
-margin_bottom = 238.0
-text = "join game"
+margin_bottom = 178.0
+text = "join server"
+
+[node name="HSeparator4" type="HSeparator" parent="Menu/VBox"]
+margin_top = 182.0
+margin_right = 180.0
+margin_bottom = 186.0
+
+[node name="HBox3" type="HBoxContainer" parent="Menu/VBox"]
+margin_top = 190.0
+margin_right = 180.0
+margin_bottom = 210.0
+
+[node name="Label" type="Label" parent="Menu/VBox/HBox3"]
+margin_top = 3.0
+margin_right = 31.0
+margin_bottom = 17.0
+text = "Map:"
+
+[node name="MapDropDown" type="OptionButton" parent="Menu/VBox/HBox3"]
+margin_left = 35.0
+margin_right = 180.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
 
 [node name="Localgame" type="Button" parent="Menu/VBox"]
-margin_top = 242.0
+margin_top = 214.0
 margin_right = 180.0
-margin_bottom = 262.0
-size_flags_vertical = 2
-text = "local game"
+margin_bottom = 234.0
+text = "start server & join"
+
+[node name="StartServer" type="Button" parent="Menu/VBox"]
+margin_top = 238.0
+margin_right = 180.0
+margin_bottom = 258.0
+text = "start server"
 
 [node name="HSeparator3" type="HSeparator" parent="Menu/VBox"]
-margin_top = 288.0
+margin_top = 262.0
+margin_right = 180.0
+margin_bottom = 266.0
+size_flags_vertical = 2
+
+[node name="Credits" type="Button" parent="Menu/VBox"]
+margin_top = 272.0
 margin_right = 180.0
 margin_bottom = 292.0
+text = "credits"
 
 [node name="Exit" type="Button" parent="Menu/VBox"]
 margin_top = 296.0
@@ -187,20 +216,70 @@ margin_right = 365.0
 margin_bottom = 40.0
 text = "Connected Players:"
 
-[node name="List" type="ItemList" parent="ServerInfo/VBox"]
+[node name="PlayersList" type="ItemList" parent="ServerInfo/VBox"]
 margin_top = 44.0
 margin_right = 365.0
-margin_bottom = 292.0
+margin_bottom = 256.0
 size_flags_vertical = 3
 
-[node name="Disconnect" type="Button" parent="ServerInfo/VBox"]
-margin_top = 296.0
+[node name="HBox" type="HBoxContainer" parent="ServerInfo/VBox"]
+margin_top = 260.0
 margin_right = 365.0
-margin_bottom = 316.0
+margin_bottom = 280.0
+
+[node name="StartGame" type="Button" parent="ServerInfo/VBox/HBox"]
+margin_right = 80.0
+margin_bottom = 20.0
+text = "start game"
+
+[node name="ServerIndicator" type="Label" parent="ServerInfo/VBox/HBox"]
+margin_left = 84.0
+margin_top = 3.0
+margin_right = 208.0
+margin_bottom = 17.0
+custom_colors/font_color = Color( 0, 1, 0, 1 )
+text = "[you are the server]"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Disconnect" type="Button" parent="ServerInfo/VBox/HBox"]
+margin_left = 283.0
+margin_right = 365.0
+margin_bottom = 20.0
+size_flags_horizontal = 10
 text = "disconnect"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="HSeparator2" type="HSeparator" parent="ServerInfo/VBox"]
+margin_top = 284.0
+margin_right = 365.0
+margin_bottom = 288.0
+
+[node name="HBox2" type="HBoxContainer" parent="ServerInfo/VBox"]
+margin_top = 292.0
+margin_right = 365.0
+margin_bottom = 316.0
+
+[node name="Label" type="Label" parent="ServerInfo/VBox/HBox2"]
+margin_top = 5.0
+margin_right = 32.0
+margin_bottom = 19.0
+text = "Chat:"
+
+[node name="Message" type="LineEdit" parent="ServerInfo/VBox/HBox2"]
+margin_left = 36.0
+margin_right = 318.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="Send" type="Button" parent="ServerInfo/VBox/HBox2"]
+margin_left = 322.0
+margin_right = 365.0
+margin_bottom = 24.0
+text = "Send"
 
 [node name="Console" type="VBoxContainer" parent="."]
 anchor_top = 0.8
@@ -227,8 +306,9 @@ anchor_left = 0.2
 anchor_top = 0.12
 anchor_right = 0.4
 anchor_bottom = 0.15
+margin_top = -1.25992
 margin_right = 40.0
-margin_bottom = 40.0
+margin_bottom = 38.7401
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -249,8 +329,11 @@ __meta__ = {
 [connection signal="pressed" from="Menu/VBox/PlayerSelection/PreviousChar" to="." method="_on_PreviousChar_pressed"]
 [connection signal="pressed" from="Menu/VBox/PlayerSelection/NextChar" to="." method="_on_NextChar_pressed"]
 [connection signal="pressed" from="Menu/VBox/PlayerSelection/RandomizeTemplate" to="." method="_on_RandomizeTemplate_pressed"]
-[connection signal="pressed" from="Menu/VBox/StartServer" to="." method="_on_StartServer_pressed"]
 [connection signal="pressed" from="Menu/VBox/JoinGame" to="." method="_on_JoinGame_pressed"]
 [connection signal="pressed" from="Menu/VBox/Localgame" to="." method="_on_Localgame_pressed"]
+[connection signal="pressed" from="Menu/VBox/StartServer" to="." method="_on_StartServer_pressed"]
 [connection signal="pressed" from="Menu/VBox/Exit" to="." method="_on_Exit_pressed"]
-[connection signal="pressed" from="ServerInfo/VBox/Disconnect" to="." method="_on_Disconnect_pressed"]
+[connection signal="pressed" from="ServerInfo/VBox/HBox/StartGame" to="." method="_on_StartGame_pressed"]
+[connection signal="pressed" from="ServerInfo/VBox/HBox/Disconnect" to="." method="_on_Disconnect_pressed"]
+[connection signal="text_entered" from="ServerInfo/VBox/HBox2/Message" to="." method="_on_Message_text_entered"]
+[connection signal="pressed" from="ServerInfo/VBox/HBox2/Send" to="." method="_on_Send_pressed"]

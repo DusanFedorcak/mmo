@@ -57,8 +57,8 @@ func tick():
 			
 			
 func _process_sensors():
-	# a simple code for emiting events based on sensed effects like shots, hits around etc.
-	# as some kind of presistance is needed to not react on the same effect multiple times	
+	# A simple code for emiting events based on sensed effects like shots, hits around etc.
+	# as some kind of persistence is needed to not react on the same effect multiple times	
 	for effect_id in body_sensors.effects:
 		if not effect_id in effect_memory:
 			effect_memory[effect_id] = 1.0
@@ -68,7 +68,7 @@ func _process_sensors():
 					name = "SHOT",
 					direction = effect.direction,
 				})
-	# hacky way how to clean up the effect memory of any old entries
+	# hacky way how to clean up the "effect memory" of any old entries
 	# (no effect in sensors means that any effect in memory was reacted to)
 	if not body_sensors.effects:
 		effect_memory.clear()

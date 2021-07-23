@@ -4,7 +4,7 @@ onready var world_node = $".."
 	
 
 func _ready():	
-	$Help.visible = false
+	$Help.visible = false	
 	_populate_help()
 
 

@@ -24,17 +24,23 @@ func _process(delta):
 	$MouseLocation.position = get_global_mouse_position()
 	
 
-func setup_for_server():
-	EventBus.connect("player_registered", self, "_on_player_registered")
-	$Navigation.init_navigation($Terrain, $Roads, $Obstacles)
+func setup_for_server():	
+	$Navigation.init_navigation($Terrain, $Roads, $Obstacles)	
+
+	for existing in $Items.get_children():
+		rpc("add_item", existing.dump_info())	
 	
 	for i in range(10):
 		spawn_npc()
 		
+	for network_id in Network.connected_players:
+		spawn_player(network_id, Network.connected_players[network_id])
+		
 
 func setup_for_client():
+	# Must be removed and added by the server again to assure synced node names
 	for i in $Items.get_children():
-		i.queue_free()	
+		i.queue_free()
 
 
 func spawn_npc():
@@ -73,14 +79,15 @@ func spawn_player(network_id, player_info):
 		
 func _send_state_update():	
 	var game_state = {}
-	#OPTIMIZE SENT STATE TO SCREEN PROXIMITY objects
+	#TODO: OPTIMIZE SENT STATE TO NEAR-CAMERA OBJECTS
 	for char_node in $Characters.get_children():
 		game_state[char_node.id] = char_node.dump_state()
 			
 	rpc_unreliable("update_state", game_state)
 
 
-func _on_player_registered(network_id, player_info):		
+func _on_player_registered(network_id, player_info):	
+	# CURRENTLY NOT USED, use it for in-game adding of new players	
 	# add all existing characters to the new player's map
 	if network_id != 1:
 		for existing in $Characters.get_children():

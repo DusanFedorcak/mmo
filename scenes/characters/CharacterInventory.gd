@@ -25,7 +25,7 @@ func use_current_item():
 			rpc("consume_current_item")		
 		
 
-remotesync func _update_top_panel():
+func _update_top_panel():
 	if $"../UI/TopPanel".visible:
 		for slot in $"../UI/TopPanel/VBox/Inventory".get_children():
 			slot.get_node("TextureRect").texture = null			

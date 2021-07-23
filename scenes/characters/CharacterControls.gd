@@ -45,7 +45,7 @@ func _get_nearest_waypoint():
 				return path[0]
 			else:
 				path.remove(0)
-				if path.empty():
+				if not path:
 					path = null
 					return null
 	else:
