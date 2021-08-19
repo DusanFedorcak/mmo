@@ -1,4 +1,4 @@
-# AGENTS 1.0
+# AGENTS 0.1
 
 Simple MORPG implementation in Godot. 
 It is a pure hobby project written just to find out how difficult is to write a server-governed multi-player game in Godot.
