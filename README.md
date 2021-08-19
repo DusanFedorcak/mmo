@@ -3,6 +3,8 @@
 Simple MORPG implementation in Godot. 
 Pure hobby project written just to find out how difficult is to write a server-governed multi-player game in Godot.
 
+![screenshot](assets/screenshot.png)
+
 ## Features
 
 The projects features a multiplayer game where each player controls a single character by issuing commands rather than controlling the character movement directly.
