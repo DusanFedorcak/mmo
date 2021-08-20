@@ -27,7 +27,7 @@ The code can be easily modified to allow for controlling of multiple units (RTS 
   - working *YSort* for large single tiles (with correct origin at the bottom)
 - *AI*
   - collision-based sensors for hearing and sight
-  - A* navigation with preferred paths (roads) and obstacles.
+  - A* navigation with preferred paths (roads) and obstacles working with tilesets collision & navigation shapes
   - rudimentary AI for NPCs (walk around and say lines)
   
 ## Design Philosophy 
