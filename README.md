@@ -1,7 +1,6 @@
 # AGENTS 0.1
 
-Simple MORPG implementation in Godot. 
-It is a pure hobby project written just to find out how difficult is to write a server-governed multi-player game in Godot.
+Simple top-down multiplayer game in Godot. It is a pure hobby project written just to find out how difficult is to write a server-governed multi-player game in Godot.
 
 It's not a complete game, it only has a few essential features and can be used as an inspiration on how to deal with server-client communication in your Godot projects.
 
@@ -14,7 +13,7 @@ This was a design choice as such a control scheme is more suitable to slower-pac
 The code can be easily modified to allow for controlling of multiple units (RTS style)
 
 - *game features*
-  - free character movement around a map
+  - character movement around a map
   - inventory & usable items
   - scanline weapons
   - basic health & damage logic
@@ -25,7 +24,7 @@ The code can be easily modified to allow for controlling of multiple units (RTS 
   - slower reliable updates for events (e.g. player join, item pickup, effects, etc.)
 - *tile sets*
   - all tile types used (autotiles, atlas tiles, single tiles)
-  - correctly working *YSort* for large single tiles (with correct origin at the bottom)
+  - working *YSort* for large single tiles (with correct origin at the bottom)
 - *AI*
   - collision-based sensors for hearing and sight
   - A* navigation with preferred paths (roads) and obstacles.
@@ -33,22 +32,21 @@ The code can be easily modified to allow for controlling of multiple units (RTS 
   
 ## Design Philosophy 
 
-I tried to follow best practices recommended by the Godot team (like aggregation over inheritance, encapsulating scripts to nodes they affect etc.) but I also wanted to **make it as simple as possible** so there are some tradeoffs.
-Many things can be (and should be) done diferently for the bigger project. Anyway, I believe in short iterations and adding stuff only when necessary and again, simplicity.
+The main principle I followed was **make it as simple as possible**. There are some really detailed tutorials but often covers too many non-essential features. I tried to put just bare minumum to make it playable and to showcase essential features in the multiplayer game use-case. Currently the whole project has ~1200 loc.
 
-The code isn't fully commented but should be self-explanatory. I tried to explain myself when the code started to look hairy.
+I also tried to follow best practices recommended by the Godot team (like aggregation over inheritance, encapsulating scripts to nodes they affect etc.) but to keep it simple, there are some tradeoffs. Many things can be (and should be) done diferently for the bigger project. Anyway, I believe in short iterations and adding stuff only when necessary.
 
 For the net code, I used Godot's high-level multiplayer framework which works perfectly for my use-case.
-I mixed the server and the client code together and extensively use `remotesync` keyword where any udpate to both server/client was needed, occasionally adding `master/puppet` to indicate special cases.
+I've mixed the server and the client code together and extensively use `remotesync` keyword where any udpate to both server/client was needed, occasionally adding `master/puppet` to indicate special cases.
 
-I tried to separate the server section and the remote section so it can be seen what runs on server only and whats propagated to clients.
+I've separated the server section and the remote section in the code so it can be seen what runs on server only and whats propagated to clients. The code isn't fully commented but should be self-explanatory. I tried to explain myself when the code started to look hairy.
   
 ## Future Development
 
 The project isn't by any mean feature complete and I do not guarantee or plan to add new features in near future.
 I might continue with the development and put more stuff in (especially around NPCs AI support) but it really depends on my free time.
 
-Anyway, I welcome any comment, suggestion or bug report but cannot guarantee I'll intergate it. Feel free to fork it for yourself.
+Anyway, I welcome comments, suggestions or bug reports but cannot guarantee I'll intergate it. Feel free to fork it for yourself.
 
 ## License
 
