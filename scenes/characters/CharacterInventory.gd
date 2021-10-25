@@ -13,6 +13,13 @@ func dump_info():
 		result.append(item.dump_info())
 	return result
 	
+
+func dump_item_tags():
+	var result = []
+	for item in get_children():
+		result.append(item.tag)
+	return result
+
 	
 func setup_from_info(info):
 	for item_info in info:

@@ -46,36 +46,17 @@ var heard_shot_lines = [
 	"Oh no!",	
 ]
 
-var effect_memory = {}
-
 
 func tick():
-	if enabled:		
-		_process_sensors()		
-		_process_events()
+	$Memory.tick()
+	
+	if enabled:					
+		_process_events()		
 		_update_state()		
 			
 			
-func _process_sensors():
-	# A simple code for emiting events based on sensed effects like shots, hits around etc.
-	# as some kind of persistence is needed to not react on the same effect multiple times	
-	for effect_id in body_sensors.effects:
-		if not effect_id in effect_memory:
-			effect_memory[effect_id] = 1.0
-			var effect = body_sensors.effects[effect_id]
-			if effect.body is ShotFX:
-				body_sensors.events.append({
-					name = "SHOT",
-					direction = effect.direction,
-				})
-	# hacky way how to clean up the "effect memory" of any old entries
-	# (no effect in sensors means that any effect in memory was reacted to)
-	if not body_sensors.effects:
-		effect_memory.clear()
-			
 func _process_events():
-	for event in body_sensors.events:
-					
+	for event in body_sensors.events:		
 		match event.name:
 			"SHOT":
 				if body.state == Character.State.IDLE:
@@ -96,8 +77,9 @@ func _process_events():
 			
 			_:
 				pass
-			
-	body_sensors.events.clear()
+		
+		#TODO: add proper "event handled & timeout" logic to not touch events outside of sensors script.
+		body_sensors.events.clear()
 
 
 func _update_state():
@@ -113,12 +95,27 @@ func _update_state():
 			text = bored_lines[randi() % len(bored_lines)]
 		})
 					
-	if (
-		body.state == Character.State.MOVING and 
-		not body_sensors.characters.near.empty() and
-		randf() < 0.01
-	):
-		body_controls.receive_command({
-			name = "SAY",
-			text = greeting_lines[randi() % len(greeting_lines)]
-		})
+#	if (
+#		body.state == Character.State.MOVING and 
+#		not body_sensors.characters.near.empty() and
+#		randf() < 0.01
+#	):
+#		body_controls.receive_command({
+#			name = "SAY",
+#			text = greeting_lines[randi() % len(greeting_lines)]
+#		})
+
+func _test_condition(condition: Condition):	
+	return $Conditions.callv(condition.name, condition.params)
+		
+		
+func _perform_action(action: Action):	
+	$Actions.call(action.name)
+	return _test_condition(action.post)
+	
+
+func _test():	
+	print(_perform_action($Actions._get_actions()[0]))
+	
+	
+	

@@ -59,7 +59,11 @@ func _unhandled_input(_event):
 		for command in commands:
 			#send command to server			
 			player.get_node("Controls").rpc_id(1, "receive_command", command)			
-			
-		if _event.is_action_pressed("debug_show_senses"):
-			var sensors = player.get_node("Sensors")
-			sensors.show_senses = !sensors.show_senses
+		
+		if Network.is_server:
+			if _event.is_action_pressed("debug_show_senses"):
+				var sensors = player.get_node("Sensors")
+				sensors.show_senses = !sensors.show_senses
+				
+			if _event.is_action_pressed("debug_trigger_test"):
+				player.get_node("AI")._test()

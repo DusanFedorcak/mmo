@@ -1,4 +1,4 @@
-extends "res://scenes/items/Gun.gd"
+extends "res://scenes/items/weapons/Gun.gd"
 
 var SlashFXScene = preload("res://scenes/effects/SlashFX.tscn")
 

@@ -9,6 +9,16 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Reference",
+"class": "Action",
+"language": "GDScript",
+"path": "res://scenes/characters/ai/Action.gd"
+}, {
+"base": "Node",
+"class": "Actions",
+"language": "GDScript",
+"path": "res://scenes/characters/ai/Actions.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Character",
 "language": "GDScript",
@@ -25,9 +35,24 @@ _global_script_classes=[ {
 "path": "res://scenes/characters/CharacterControls.gd"
 }, {
 "base": "Node2D",
+"class": "CharacterMemory",
+"language": "GDScript",
+"path": "res://scenes/characters/CharacterMemory.gd"
+}, {
+"base": "Node2D",
 "class": "CharacterSensors",
 "language": "GDScript",
 "path": "res://scenes/characters/CharacterSensors.gd"
+}, {
+"base": "Reference",
+"class": "Condition",
+"language": "GDScript",
+"path": "res://scenes/characters/ai/Condition.gd"
+}, {
+"base": "Node",
+"class": "Conditions",
+"language": "GDScript",
+"path": "res://scenes/characters/ai/Conditions.gd"
 }, {
 "base": "Node2D",
 "class": "Effect",
@@ -55,10 +80,15 @@ _global_script_classes=[ {
 "path": "res://scenes/World.gd"
 } ]
 _global_script_class_icons={
+"Action": "",
+"Actions": "",
 "Character": "",
 "CharacterAI": "",
 "CharacterControls": "",
+"CharacterMemory": "",
 "CharacterSensors": "",
+"Condition": "",
+"Conditions": "",
 "Effect": "",
 "Item": "",
 "MapNavigation": "",
@@ -121,6 +151,11 @@ debug_show_nav_map={
 debug_show_senses={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777247,"unicode":0,"echo":false,"script":null)
+ ]
+}
+debug_trigger_test={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777255,"unicode":0,"echo":false,"script":null)
  ]
 }
 control_move={

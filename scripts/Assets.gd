@@ -21,9 +21,9 @@ const CHARACTER_FILES = [
 	"visoes_3_sprites_by_doubleleggy_d2l91ct.png",	
 ]
 
-# there might be a better way how to dynamically register all items
+#TODO: there might be a better way how to dynamically register all items
 const ITEMS = [
-	"Gun", "Rifle", "Potion", "Sword"
+	"weapons/Gun", "weapons/Rifle", "consumables/Potion", "weapons/Sword"
 ]
 
 const MAPS = {
@@ -33,7 +33,7 @@ const MAPS = {
 var item_scenes = {}
 var character_sprites = []
 var names = null
-
+var default_font = null
 
 func _ready():
 	randomize()
@@ -42,6 +42,10 @@ func _ready():
 
 	for item in ITEMS:
 		item_scenes[item] = load("res://scenes/items/%s.tscn" % item)
+		
+	var _label = Label.new()
+	default_font = _label.get_font("")	
+	_label.queue_free()
 
 
 func get_random_name():

@@ -11,6 +11,7 @@ var id = -1
 #TODO: find better way how to reference a scene by name
 export var scene = ""
 export(State) var state = State.DROPPED setget set_state
+export var tag = ""
 
 
 static func create_from_info(info):
@@ -26,6 +27,7 @@ func _init():
 
 func _ready():	
 	assert(scene, "Item scene not filled")		
+	assert(tag, "Item tag not filled")		
 	name = str(id)
 
 func dump_info():

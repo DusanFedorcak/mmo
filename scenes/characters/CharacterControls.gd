@@ -82,8 +82,8 @@ master func receive_command(command):
 				if body.inventory.current_item:
 					body.inventory.rpc("drop_current_item", body.position)
 			"TAKE_NEAREST":
-				var nearest_item = sensors.get_nearest_item()
+				var nearest_item = sensors.get_nearest_pickable_item()
 				if nearest_item:					
-					body.inventory.rpc("take", nearest_item.id)
+					body.inventory.rpc("take", nearest_item.id)			
 			_:
 				pass

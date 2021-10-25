@@ -24,5 +24,5 @@ func delete_current_map():
 		map.queue_free()
 		
 		$UI/Splash.visible = true
-		$UI/MainMenu.visible = true
+		$UI/MainMenu.visible = true		
 	

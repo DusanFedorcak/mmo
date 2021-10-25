@@ -8,6 +8,7 @@ var id = -1
 var player_id = -1
 var char_name = "Name"
 var template = 0
+var tag = "agent"
 
 const MAX_HEALTH = 100.0
 var health = MAX_HEALTH
@@ -43,7 +44,7 @@ func set_motion(direction, _running=false):
 
 func _init():
 	id = get_instance_id()
-	
+		
 
 func _ready():
 	name = str(id)
@@ -54,13 +55,18 @@ func _ready():
 	$Icons/Speaking.modulate = color
 	connect("hit", self, "_on_hit")
 	
+	# No need for sensors and ai in the client, Controls are needed though (for sending commands)
+	if not Network.is_server:
+		$AI.queue_free()
+		$Sensors.queue_free()		
+	
 
 func tick(delta):
 	ai_accum += delta
 	while ai_accum > AI_TICK:				
 		$Sensors.tick()
 		$AI.tick()
-		$Controls.tick()
+		$Controls.tick() 
 		ai_accum -= AI_TICK
 		
 
@@ -105,7 +111,7 @@ func setup_from_info(info):
 	
 func dump_state():
 	# This method and the `update_state()` counterpart 
-	# assures fact-paced unreliable update between server and client (usually for character movement)
+	# assures fast-paced unreliable update between server and client (usually for character movement)
 	return {					
 		state = state,		
 		facing_direction = facing_direction,

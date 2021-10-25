@@ -8,7 +8,7 @@ const MAX_PLAYERS = 32
 var is_connected = false
 var is_server = false
 var connected_players = {}
-var _my_info = null
+var _client_info = null
 
 
 func switch_signals(do_connect, is_server):
@@ -82,7 +82,7 @@ func connect_server(player_name, player_template, address, port):
 	Log.info("Joining server %s:%d ..." % [address, port])
 	switch_signals(true, false)	
 	
-	_my_info = {
+	_client_info = {
 		name = player_name,
 		template = player_template		
 	}
@@ -96,7 +96,7 @@ func _connected_ok():
 	Log.info("Connected to server.")
 	is_connected = true
 	emit_signal("network_status_changed")
-	rpc_id(1, "register_player", _my_info)
+	rpc_id(1, "register_player", _client_info)
 	
 
 func _server_disconnected():

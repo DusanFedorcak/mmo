@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scenes/characters/Character.gd" type="Script" id=1]
 [ext_resource path="res://scenes/characters/CharacterControls.gd" type="Script" id=2]
@@ -12,12 +12,15 @@
 [ext_resource path="res://scenes/effects/DeathTween.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/characters/CharacterInventory.gd" type="Script" id=11]
 [ext_resource path="res://assets/items/heart_shaded.png" type="Texture" id=12]
+[ext_resource path="res://scenes/characters/ai/Conditions.gd" type="Script" id=13]
+[ext_resource path="res://scenes/characters/ai/Actions.gd" type="Script" id=14]
+[ext_resource path="res://scenes/characters/CharacterMemory.gd" type="Script" id=15]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 4.0
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 300.0
+radius = 400.0
 
 [sub_resource type="CapsuleShape2D" id=3]
 radius = 12.0
@@ -34,6 +37,18 @@ script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
+
+[node name="AI" type="Node2D" parent="."]
+script = ExtResource( 6 )
+
+[node name="Conditions" type="Node" parent="AI"]
+script = ExtResource( 13 )
+
+[node name="Actions" type="Node" parent="AI"]
+script = ExtResource( 14 )
+
+[node name="Memory" type="Node2D" parent="AI"]
+script = ExtResource( 15 )
 
 [node name="Sensors" type="Node2D" parent="."]
 script = ExtResource( 9 )
@@ -67,9 +82,6 @@ end_cap_mode = 2
 [node name="Path" type="Line2D" parent="Controls/WorldIcons"]
 width = 2.0
 default_color = Color( 0.968627, 1, 0, 1 )
-
-[node name="AI" type="Node2D" parent="."]
-script = ExtResource( 6 )
 
 [node name="Inventory" type="Node2D" parent="."]
 script = ExtResource( 11 )
