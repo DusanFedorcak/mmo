@@ -43,8 +43,6 @@ func tick():
 	_update_content(characters, sensors.characters_map)
 	_update_content(items, sensors.items_map)
 	
-	#for debug draw
-	update()
 
 func _update_content(content, sensed_objects):			
 	for sensed_obj in sensed_objects.values():
@@ -69,7 +67,7 @@ func _draw_debug(obj):
 
 
 func _draw():	
-	if sensors.show_senses:	
+	if body.show_debug_info:	
 		for _char in characters.values():
 			_draw_debug(_char)
 						
@@ -81,3 +79,7 @@ func _draw():
 		draw_line(Vector2.ZERO, Vector2(PLAIN_SIGHT_DIST, 0).rotated(b_angle - PLAIN_SIGHT_FOV * 0.5), Color.magenta)
 		draw_line(Vector2.ZERO, Vector2(PLAIN_SIGHT_DIST, 0).rotated(b_angle + PLAIN_SIGHT_FOV * 0.5), Color.magenta)
 		draw_arc(Vector2.ZERO, PLAIN_SIGHT_DIST, b_angle - PLAIN_SIGHT_FOV * 0.5, b_angle + PLAIN_SIGHT_FOV * 0.5, 20, Color.magenta)				
+
+
+func _process(delta):
+	update()

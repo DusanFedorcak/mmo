@@ -144,8 +144,16 @@ __meta__ = {
 
 [node name="SpeakingTimer" type="Timer" parent="Icons/Speaking"]
 
+[node name="Selected" type="Sprite" parent="Icons"]
+visible = false
+modulate = Color( 1, 0, 1, 1 )
+z_index = -1
+z_as_relative = false
+texture = ExtResource( 3 )
+
 [node name="Hover" type="Sprite" parent="Icons"]
 visible = false
+position = Vector2( 0, -2 )
 z_index = -1
 z_as_relative = false
 texture = ExtResource( 3 )
@@ -254,6 +262,29 @@ custom_styles/panel = ExtResource( 8 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DebugPanel" type="MarginContainer" parent="UI"]
+visible = false
+anchor_right = 0.3
+anchor_bottom = 0.5
+margin_left = 5.0
+margin_top = 20.0
+margin_right = -5.0
+margin_bottom = -5.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Info" type="Label" parent="UI/DebugPanel"]
+margin_right = 278.0
+margin_bottom = 275.0
+size_flags_vertical = 1
+custom_styles/normal = ExtResource( 8 )
+text = "DEBUG INFO"
 __meta__ = {
 "_edit_use_anchors_": false
 }

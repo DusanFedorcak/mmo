@@ -7,7 +7,6 @@ const NEAR_ITEM_DISTANCE = 30
 
 onready var body: Character = get_parent()
 onready var sight_distance = $Sight/Circle.shape.radius
-var show_senses = false
 
 var characters = []
 var characters_map = {}
@@ -22,12 +21,14 @@ var events = []
 
 class Record:
 	var body	
+	var position: Vector2
 	var direction: Vector2
 	var angle: float
 	var distance: float
 		
 	func _init(_body, _direction, _angle):	
 		body = _body	
+		position = _body.position
 		direction = _direction
 		angle = _angle
 		distance = _direction.length()
@@ -40,9 +41,7 @@ class Record:
 func tick():
 	if body.state != Character.State.DEAD:		
 		_update_senses()
-		_generate_events()
-				
-		update()		
+		_generate_events()			
 
 			
 func _update_senses():
@@ -129,11 +128,11 @@ func get_nearest_pickable_item():
 
 			
 func _draw():	
-	if show_senses:	
+	if body.show_debug_info:	
 		for _char in characters:			
-			draw_circle(_char.direction, 5.0, Color.yellow)					
+			draw_circle(_char.position - body.position, 5.0, Color.yellow)					
 		for _item in items:
-			draw_circle(_item.direction, 5.0, Color.yellow)							
+			draw_circle(_item.position - body.position, 5.0, Color.yellow)							
 		
 		draw_line(Vector2.ZERO, get_most_crowded_direction() * 20, Color.red, 2.0)
 				
@@ -141,3 +140,6 @@ func _draw():
 		draw_line(Vector2.ZERO, Vector2(sight_distance, 0).rotated(b_angle - FOV * 0.5), Color.yellow)
 		draw_line(Vector2.ZERO, Vector2(sight_distance, 0).rotated(b_angle + FOV * 0.5), Color.yellow)
 		draw_arc(Vector2.ZERO, sight_distance, b_angle - FOV * 0.5, b_angle + FOV * 0.5, 20, Color.yellow)
+		
+func _process(delta):
+	update()

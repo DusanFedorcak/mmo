@@ -1,6 +1,6 @@
 extends YSort
 
-signal hit(gun, from_direction, at_point)
+signal hit(gun, from_id, from_direction, at_point)
 
 const HitFXScene = preload("res://scenes/effects/HitFX.tscn")
 const CharacterScene = preload("res://scenes/characters/Character.tscn")
@@ -22,6 +22,12 @@ func _process(delta):
 		$PlayerCamera.update_camera($UI.player.position)
 		
 	$MouseLocation.position = get_global_mouse_position()
+	
+	var picked_areas = $MouseLocation.get_overlapping_areas()	
+	if picked_areas:
+		$UI.under_mouse = picked_areas[0].get_meta("body")
+	else:
+		$UI.under_mouse = null
 	
 
 func setup_for_server():	
@@ -100,7 +106,7 @@ func _on_player_registered(network_id, player_info):
 	spawn_player(network_id, player_info)	
 
 
-func _on_hit(gun, from_direction, at_point):
+func _on_hit(gun, from_id, from_direction, at_point):
 	rpc("create_hit_effect", at_point)
 	
 	

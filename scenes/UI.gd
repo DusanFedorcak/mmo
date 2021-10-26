@@ -1,7 +1,6 @@
 extends CanvasLayer
 
 onready var world_node = $".."
-	
 
 func _ready():	
 	$Help.visible = false	

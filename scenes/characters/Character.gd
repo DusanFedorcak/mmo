@@ -13,7 +13,7 @@ var tag = "agent"
 const MAX_HEALTH = 100.0
 var health = MAX_HEALTH
 
-signal hit(gun, from_direction, at_point)
+signal hit(gun, from_id, from_direction, at_point)
 
 var animation = null
 var color = Color.black
@@ -34,6 +34,8 @@ var facing_direction: Vector2 = Vector2.DOWN
 var motion_direction: Vector2 = Vector2.ZERO
 var running = false
 
+var show_debug_info = false
+
 const HitFXScene = preload("res://scenes/effects/HitFX.tscn")
 
 
@@ -49,6 +51,7 @@ func _init():
 func _ready():
 	name = str(id)
 	$UI/TopPanel.visible = false
+	$Picker.set_meta("body", self)
 	$CollisionShape.disabled = not Network.is_server
 	$Icons/Speaking.visible = false
 	color = Assets.get_random_color()
@@ -58,7 +61,9 @@ func _ready():
 	# No need for sensors and ai in the client, Controls are needed though (for sending commands)
 	if not Network.is_server:
 		$AI.queue_free()
-		$Sensors.queue_free()		
+		$Sensors.queue_free()
+		
+	EventBus.connect("object_selected", self, "_on_object_selected")
 	
 
 func tick(delta):
@@ -144,7 +149,9 @@ func _physics_process(delta):
 
 	
 func _process(delta):	
-	_update_animation()	
+	_update_animation()
+	if show_debug_info:
+		$UI/DebugPanel/Info.text = dump_debug_info()
 	
 	
 func _resolve_animation(direction: Vector2):	
@@ -191,7 +198,7 @@ func _on_Picker_area_exited(area):
 	$Icons/Hover.visible = false
 			
 			
-func _on_hit(gun, from_direction, at_point):			
+func _on_hit(gun, from_id, from_direction, at_point):			
 	if state != State.DEAD:
 		health -= gun.damage		
 		rpc("set_health", health)	
@@ -203,11 +210,27 @@ func _on_hit(gun, from_direction, at_point):
 			EventBus.emit_signal("character_died", id)			
 		else:
 			$Sensors.events.append({
-				name = "HIT"
+				name = "HIT",
+				from_id = from_id
 			})
 									
 	rpc("show_hit", from_direction, at_point)
 	
+
+func _on_object_selected(obj):
+	show_debug_info = obj == self
+	$Icons/Selected.visible = show_debug_info
+	$UI/DebugPanel.visible = show_debug_info
+	
+
+func dump_debug_info():
+	return (
+		"--- DEBUG INFO ---\n" + 
+		"id: %s (%s)\n" % [id, tag] +		
+		"state: %s\n" % State.keys()[state] +
+		$AI.dump_debug_info()
+	)		
+
 	
 # --- REMOTE FUNCTIONS ---
 
