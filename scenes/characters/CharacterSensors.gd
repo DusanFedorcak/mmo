@@ -8,34 +8,19 @@ const NEAR_ITEM_DISTANCE = 30
 onready var body: Character = get_parent()
 onready var sight_distance = $Sight/Circle.shape.radius
 
-var characters = []
-var characters_map = {}
+var objects = []
+var objects_map = {}
 
+var characters = []
 var items = []
-var items_map = {}
 
 var effects = {}
 var effect_memory = {}
 var events = []
 
 
-class Record:
-	var body	
-	var position: Vector2
-	var direction: Vector2
-	var angle: float
-	var distance: float
-		
-	func _init(_body, _direction, _angle):	
-		body = _body	
-		position = _body.position
-		direction = _direction
-		angle = _angle
-		distance = _direction.length()
-		
-	
-	static func _sort(a, b):
-		return a.distance < b.distance	
+func _process(delta):
+	update()
 		
 
 func tick():
@@ -44,11 +29,8 @@ func tick():
 		_generate_events()			
 
 			
-func _update_senses():
-	characters.clear()
-	characters_map.clear()	
-	items.clear()	
-	items_map.clear()		
+func _update_senses():	
+	objects_map.clear()	
 	effects.clear()
 		
 	var near_bodies = $Sight.get_overlapping_bodies()				
@@ -67,18 +49,32 @@ func _update_senses():
 		
 		if in_sight:		
 			var r = Record.new(other_body, direction, angle)				
-			if other_body is Character:					
-				characters.append(r)
-				characters_map[other_body.id] = r
-			elif other_body is Item:							
-				items.append(r)
-				items_map[other_body.id] = r
-				
-		if other_body is Effect:
-			effects[other_body.id] = Record.new(other_body, direction, angle)	
+			if other_body is Character or other_body is Item:									
+				objects_map[other_body.id] = r			
+		
+		# "hear" only effects caused by other agents 
+		if other_body is Effect and other_body.from_id != body.id:
+			effects[other_body.id] = Record.new(other_body, direction, angle)
+			
+	objects = objects_map.values()	
+	objects.sort_custom(Record, "_sort")			
+		
+	items.clear()
+	characters.clear()
 	
-		characters.sort_custom(Record, "_sort")
-		items.sort_custom(Record, "_sort")
+	for obj in objects:
+		if obj is Character:
+			characters.append(obj)
+		else:
+			items.append(obj)
+
+
+func get_map():
+	return objects_map			
+
+
+func get_sorted_list():
+	return objects
 			
 				
 func _generate_events():
@@ -89,10 +85,10 @@ func _generate_events():
 		if not effect_id in effect_memory:
 			effect_memory[effect_id] = 1.0
 			var effect = effects[effect_id]
-			if effect.body is ShotFX:
+			if effect.body is ShotFX:				
 				events.append({
 					name = "SHOT",
-					direction = effect.direction,
+					direction = effect.direction,					
 				})
 				
 	# hacky way how to clean up the "effect memory" of any old entries
@@ -115,24 +111,50 @@ func get_most_crowded_direction():
 			
 	return result / num_near if num_near > 0 else Vector2.ZERO
 	
-	
-func get_nearest_item():	
-	return items[0].body if items else null
-	
 
 func get_nearest_pickable_item():	
 	if items and items[0].distance < NEAR_ITEM_DISTANCE:
 		return items[0].body
 	else:
 		return null
+		
+
+func get_pickable_item(item_id):
+	if item_id in objects_map and objects_map[item_id].distance < NEAR_ITEM_DISTANCE:
+		return objects_map[item_id].body
+		
+
+class Record:
+	var id
+	var tag: String
+	var position: Vector2
+	
+	var distance: float
+	var direction: Vector2
+	var angle: float	
+	var body: KinematicBody2D
+		
+	func _init(_body, _direction, _angle):
+		id = _body.id
+		tag = _body.tag				
+		position = _body.position
+		
+		distance = _direction.length()
+		direction = _direction
+		angle = _angle		
+		body = _body
+			
+	static func _sort(a, b):
+		return a.distance < b.distance	
+		
+
+# --- DEBUG CODE ---
 
 			
 func _draw():	
 	if body.show_debug_info:	
-		for _char in characters:			
-			draw_circle(_char.position - body.position, 5.0, Color.yellow)					
-		for _item in items:
-			draw_circle(_item.position - body.position, 5.0, Color.yellow)							
+		for _obj in objects:			
+			draw_circle(_obj.position - body.position, 5.0, Color.yellow)									
 		
 		draw_line(Vector2.ZERO, get_most_crowded_direction() * 20, Color.red, 2.0)
 				
@@ -141,5 +163,4 @@ func _draw():
 		draw_line(Vector2.ZERO, Vector2(sight_distance, 0).rotated(b_angle + FOV * 0.5), Color.yellow)
 		draw_arc(Vector2.ZERO, sight_distance, b_angle - FOV * 0.5, b_angle + FOV * 0.5, 20, Color.yellow)
 		
-func _process(delta):
-	update()
+

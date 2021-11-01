@@ -31,8 +31,13 @@ func try_satisfy(goal: Condition):
 		return get_script().new(name, new_pre, goal, cost)
 		
 
-func pretty_print():
-	var str_pre = PoolStringArray()
-	for c in pre:
-		str_pre.append(c.pretty_print())	
-	return "<%s cost=%.3f pre=[%s] post=%s>" % [name, cost, str_pre.join(", "), post.pretty_print()]
+static func pretty_print(action: Action):
+	if action:
+		var str_pre = PoolStringArray()
+		for c in action.pre:
+			str_pre.append(Condition.pretty_print(c))	
+		return "<%s cost=%.1f pre=[%s] post=%s>" % [
+			action.name, action.cost, str_pre.join(", "), Condition.pretty_print(action.post)
+		]
+	else:
+		return "null"

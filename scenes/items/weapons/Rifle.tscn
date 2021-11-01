@@ -6,7 +6,7 @@
 [node name="Rifle" instance=ExtResource( 1 )]
 scene = "weapons/Rifle"
 aim_spread = 5.0
-cooldown = 0.5
+cooldown = 0.75
 damage = 40.0
 
 [node name="EquipIcon" parent="." index="1"]

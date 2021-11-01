@@ -16,7 +16,7 @@ func use(by_body: Character):
 		
 		var aim_angle = by_body.facing_direction.angle() + deg2rad(aim_spread) * (randf() * 2.0 - 1.0)
 		#first, create shot effect	
-		rpc("create_shot_effect", by_body.position + Vector2(0, -16), aim_angle)
+		rpc("create_shot_effect", by_body.id, by_body.position + Vector2(0, -16), aim_angle)
 		
 		#second, test whether something was hit
 		$ShootLine.clear_exceptions()
@@ -30,13 +30,18 @@ func use(by_body: Character):
 			#if so, pass the info to the target
 			var hit_node = hit.get_parent()		
 			hit_node.emit_signal("hit", self, by_body.id, by_body.facing_direction, $ShootLine.get_collision_point())		
+			
+
+func can_shoot():
+	return $CooldownTimer.is_stopped()
 
 
 # --- REMOTE FUNCTIONS ---
 					
 
-remotesync func create_shot_effect(at_point, in_direction):
+remotesync func create_shot_effect(from_id, at_point, in_direction):
 	var shot_fx = ShotFXScene.instance()
+	shot_fx.from_id = from_id
 	shot_fx.position = at_point
 	shot_fx.rotation = in_direction
 	EventBus.emit_signal("fx_created", shot_fx)

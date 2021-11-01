@@ -1,51 +1,68 @@
 extends Node
 class_name Conditions
 
-onready var ai: CharacterAI = get_parent()		
+onready var body: Character = $"../../.."
+onready var sensors: CharacterSensors = $"../../../Sensors"
+onready var memory: CharacterMemory = $"../../Memory"
 
 
-func see(obj: Condition.Variable):
-	if obj.tag.begins_with("agent"):
-		return see_character(obj)
-	else:
-		return see_item(obj)
+func equipped(tag):
+	var current_item = body.inventory.current_item	
+	return current_item.id if current_item and Condition.Variable.valid_tag(current_item.tag, tag) else null
+		
 
+func has(tag):
+	for item in body.inventory.get_children():
+		if Condition.Variable.valid_tag(item.tag, tag):
+			return item.id
+	return null
+	
+	
+func know(tag):
+	return _find(tag, memory)
+		
 
-func see_character(_char: Condition.Variable):
-	if _char.name:
-		return _char.name in ai.body_sensors.characters_map
-	else:
-		assert(false, "Character tags not implemented!")
+func see(tag):	
+	return _find(tag, sensors)
 	
 
-func see_item(item_id: Condition.Variable):
-	pass
-
-
-func dead(char_id: Condition.Variable):
-	return see_character(char_id) and ai.body_sensors.characters_map[char_id].body.state == Character.State.DEAD
-
-
-func equipped(item_tag: Condition.Variable):
-	var current_item = ai.body.inventory.current_item
-	return current_item and _compatible_item(current_item.tag, item_tag)
-
-
-func has(item_tag: Condition.Variable):
-	var tags = ai.body.inventory.dump_item_tags()
-	for tag in tags:
-		if _compatible_item(tag, item_tag):
-			return true
-	return false
-
-
-func near(obj_id: Condition.Variable, distance):
-	return (
-		see_character(obj_id) and ai.body_sensors.characters_map[obj_id].distance < distance
-		or
-		see_item(obj_id) and ai.body_sensors.items_map[obj_id].distance < distance
-	)
+func near(tag, distance: float):
+	return _find(tag, memory, "_test_distance", [distance])
 	
 
-func _compatible_item(item_tag, other_tag):
-	return item_tag.begins_with(other_tag)
+func dead(tag):	
+	return _find(tag, memory, "_test_state", [Character.State.DEAD])	
+	
+	
+func healed():
+	return body.id if body.health > 100.0 else null	
+		
+		
+# --- SUPPPORT FUNCTIONS ---
+
+
+static func _test_distance(obj, distance):
+	return obj.distance_sq < distance * distance
+	
+	
+static func _test_state(obj, state):
+	return obj.state == state
+
+
+func _find(tag, target, filter=null, filter_params=[]):
+	if typeof(tag) == TYPE_INT:
+		if (
+			tag in target.get_map() and 
+			(not filter or callv(filter, [target.get_map()[tag]] + filter_params))
+		):
+			return tag
+		else:
+			return null
+	else:
+		for obj in target.get_sorted_list():
+			if (
+				Condition.Variable.valid_tag(tag, obj.tag) and 
+				(not filter or callv(filter, [obj] + filter_params))
+			):
+				return obj.id
+		return null

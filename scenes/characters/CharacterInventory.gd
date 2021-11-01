@@ -12,13 +12,6 @@ func dump_info():
 	for item in get_children():
 		result.append(item.dump_info())
 	return result
-	
-
-func dump_item_tags():
-	var result = []
-	for item in get_children():
-		result.append(item.tag)
-	return result
 
 	
 func setup_from_info(info):
@@ -68,6 +61,13 @@ remotesync func drop_current_item(at_point):
 		_update_top_panel()		
 		
 
+remotesync func drop_item(item_id, at_point):
+	var item = get_node_or_null(str(item_id))
+	remove_child(item)		
+	EventBus.emit_signal("item_dropped", item, at_point)
+	_update_top_panel()		
+		
+
 remotesync func consume_current_item():
 	var item = current_item
 	remove_child(current_item)
@@ -75,7 +75,7 @@ remotesync func consume_current_item():
 	_update_top_panel()
 		
 
-remotesync func take(item_id):	
+remotesync func pick_up(item_id):	
 	var item = get_node_or_null("/root/World/Map/Items/" + str(item_id))
 	if item:
 		var parent = item.get_parent()

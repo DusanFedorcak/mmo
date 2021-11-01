@@ -46,9 +46,9 @@ func _unhandled_input(_event):
 				name = "DROP",					
 			})
 			
-		if _event.is_action_pressed("control_take_item"):					
+		if _event.is_action_pressed("control_pick_up_item"):					
 			commands.append({
-				name = "TAKE_NEAREST",					
+				name = "PICK_UP_NEAREST",					
 			})
 		
 		if _event.is_action_pressed("control_speak"):					

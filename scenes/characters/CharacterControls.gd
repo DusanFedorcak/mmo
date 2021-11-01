@@ -5,9 +5,11 @@ var WAYPOINT_OFFSET = 16.0
 var AVOID_MULT = 3.0
 
 var path = null
+var target = null
 
 onready var body: Character = get_parent()
-onready var sensors: CharacterSensors = get_node("../Sensors")
+onready var sensors: CharacterSensors = $"../Sensors"
+onready var memory: CharacterMemory = $"../AI/Memory"
 			
 			
 func _process(delta):
@@ -25,7 +27,8 @@ func tick():
 				body.facing_direction = body.motion_direction
 			else:						
 				body.state = Character.State.IDLE
-				body.set_motion(Vector2.ZERO)		
+				body.set_motion(Vector2.ZERO)	
+				target = null	
 		_:
 			pass
 	
@@ -50,6 +53,13 @@ func _get_nearest_waypoint():
 					return null
 	else:
 		return null	
+		
+		
+func _pick_up_item(item):
+	if item:
+		body.inventory.rpc("pick_up", item.id)
+		if item.id in memory.objects_map:
+			memory.objects_map.erase(item.id)
 
 
 # --- REMOTE FUNCTIONS ---
@@ -61,9 +71,10 @@ master func receive_command(command):
 		match command.name:
 			"MOVE":						
 				path = get_node("/root/World/Map/Navigation").get_simple_path(body.position, command.position)				
+				target = command.position
 				body.state = Character.State.MOVING
 				$WorldIcons/Target.position = command.position
-				$WorldIcons/Path.points = path			
+				$WorldIcons/Path.points = path
 			"TURN_TO":						
 				body.state = Character.State.IDLE
 				body.facing_direction = command.direction.normalized()
@@ -71,8 +82,12 @@ master func receive_command(command):
 				body.rpc("say", command.text)
 			"EQUIP":
 				if body.inventory.get_child_count() > 0:
-					var item = body.inventory.get_child(command.index)
-					var item_id = str(item.id) if item else null
+					var item_id = null
+					if "item_id" in command:
+						item_id = str(command.item_id)
+					else:
+						var item = body.inventory.get_child(command.index)
+						item_id = str(item.id) if item else null					
 					body.inventory.rpc("equip", item_id)
 			"UNEQUIP":
 				body.inventory.rpc("equip", null)
@@ -81,9 +96,9 @@ master func receive_command(command):
 			"DROP":
 				if body.inventory.current_item:
 					body.inventory.rpc("drop_current_item", body.position)
-			"TAKE_NEAREST":
-				var nearest_item = sensors.get_nearest_pickable_item()
-				if nearest_item:					
-					body.inventory.rpc("take", nearest_item.id)			
+			"PICK_UP_NEAREST":				
+				_pick_up_item(sensors.get_nearest_pickable_item())		
+			"PICK_UP":
+				_pick_up_item(sensors.get_pickable_item(command.item_id))				
 			_:
 				pass

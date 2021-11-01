@@ -13,14 +13,20 @@ class Variable:
 		name = _name
 		tag = _tag
 		
-	func valid(other_var):		
+	static func from(obj):
+		return Variable.new("", obj.id)
+		
+	func valid(other_var: Variable):		
+		return Variable.valid_tag(tag, other_var.tag)
+	
+	static func valid_tag(tag, other_tag):
 		return (
 			tag == "" or 
-			typeof(other_var.tag) == TYPE_STRING and other_var.tag.begins_with(tag)
+			typeof(other_tag) == TYPE_STRING and other_tag.begins_with(tag)
 		)
 	
-	func pretty_print():
-		return "%s:%s" % [name, tag]
+	static func pretty_print(v: Variable):		
+		return "%s:%s" % [v.name, v.tag] if v else "null"
 					
 
 func _init(_name, _params):
@@ -60,8 +66,19 @@ func realize(assignment: Dictionary):
 	realization.params = new_params
 	return realization
 	
-func pretty_print():	
-	var str_params = PoolStringArray()
+	
+func test(conditions_node):
+	var _params = []
 	for p in params:
-		str_params.append(p.pretty_print())
-	return "%s(%s)" % [name, str_params.join(", ")]
+		_params.append(p.tag)
+	return conditions_node.callv(name, _params)
+
+	
+static func pretty_print(cond: Condition):	
+	if cond:
+		var str_params = PoolStringArray()
+		for p in cond.params:
+			str_params.append(Variable.pretty_print(p))
+		return "%s(%s)" % [cond.name, str_params.join(", ")]
+	else:
+		return "null"

@@ -6,6 +6,8 @@ export(Color) var start_color = Color.white
 export(Vector2) var end_position = Vector2.ZERO
 
 var id = -1
+var from_id = -1
+var tag = ""
 
 func _init():
 	id = get_instance_id()

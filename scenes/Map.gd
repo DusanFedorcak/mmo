@@ -36,7 +36,7 @@ func setup_for_server():
 	for existing in $Items.get_children():
 		rpc("add_item", existing.dump_info())	
 	
-	for i in range(10):
+	for i in range(2):
 		spawn_npc()
 		
 	for network_id in Network.connected_players:

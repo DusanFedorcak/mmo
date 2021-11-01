@@ -71,7 +71,8 @@ func tick(delta):
 	while ai_accum > AI_TICK:				
 		$Sensors.tick()
 		$AI.tick()
-		$Controls.tick() 
+		$Controls.tick() 		
+		$Sensors.events.clear()
 		ai_accum -= AI_TICK
 		
 
@@ -204,10 +205,7 @@ func _on_hit(gun, from_id, from_direction, at_point):
 		rpc("set_health", health)	
 			
 		if health <= 0:		
-			state = State.DEAD
-			$CollisionShape.disabled = true
-			$HitBox/Circle.disabled = true
-			EventBus.emit_signal("character_died", id)			
+			_die()			
 		else:
 			$Sensors.events.append({
 				name = "HIT",
@@ -215,6 +213,33 @@ func _on_hit(gun, from_id, from_direction, at_point):
 			})
 									
 	rpc("show_hit", from_direction, at_point)
+	
+	
+func _die():
+	state = State.DEAD
+	set_collision_layer_bit(1, false)	
+	set_collision_mask_bit(1, false)
+	$HitBox/Circle.disabled = true	
+	
+	inventory.rpc("drop_current_item", position)	
+	for item in inventory.get_children():
+		inventory.rpc("drop_item", item.id, position + Vector2(randf() * 2 - 1, randf() * 2 - 1) * 20.0)
+	
+	EventBus.emit_signal("character_died", id)		
+	
+
+#TODO: For server testing only!
+func resurrect():
+	rpc("set_health", 100.0)			
+	state = State.IDLE
+	set_collision_layer_bit(1, true)	
+	set_collision_mask_bit(1, true)
+	$HitBox/Circle.disabled = false
+	
+	$Shape/DeathTween.shown = false
+	$Shape.position = Vector2(0, -16)
+	$Shape.rotation = 0
+	$Shape.modulate = Color.white
 	
 
 func _on_object_selected(obj):
@@ -227,7 +252,8 @@ func dump_debug_info():
 	return (
 		"--- DEBUG INFO ---\n" + 
 		"id: %s (%s)\n" % [id, tag] +		
-		"state: %s\n" % State.keys()[state] +
+		"health: %.1f\n" % health + 
+		"state: %s\n" % State.keys()[state] +		
 		$AI.dump_debug_info()
 	)		
 

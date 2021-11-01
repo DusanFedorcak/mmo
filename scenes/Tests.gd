@@ -11,9 +11,16 @@ onready var test_cases = {
 
 
 func _unhandled_input(_event):		
-	if _event.is_action_pressed("debug_trigger_test"):				
+	if _event.is_action_pressed("debug_run_local"):
 		_run_test("run_local_game")
-
+		
+	if _event.is_action_pressed("debug_trigger_test"):					
+		$"../Map/UI".player.get_node("AI")._test()
+		
+	if _event.is_action_pressed("debug_resurrect"):					
+		$"../Map/UI".player.resurrect()
+		
+			
 
 class ClickStartAndJoin:
 	func valid(world):
@@ -39,7 +46,6 @@ class SwitchFullScreen:
 		
 var current_test = null
 var action_index = -1
-
 
 func _run_action():	
 	if current_test:

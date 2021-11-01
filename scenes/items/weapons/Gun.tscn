@@ -8,6 +8,7 @@
 script = ExtResource( 2 )
 scene = "weapons/Gun"
 tag = "weapon:ranged"
+cooldown = 0.5
 
 [node name="EquipIcon" parent="." index="1"]
 texture = ExtResource( 1 )
@@ -16,7 +17,7 @@ texture = ExtResource( 1 )
 visible = false
 enabled = true
 cast_to = Vector2( 300, 0 )
-collision_mask = 4
+collision_mask = 32
 collide_with_areas = true
 
 [node name="CooldownTimer" type="Timer" parent="." index="3"]

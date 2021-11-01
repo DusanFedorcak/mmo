@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://scenes/characters/Character.gd" type="Script" id=1]
 [ext_resource path="res://scenes/characters/CharacterControls.gd" type="Script" id=2]
@@ -15,6 +15,10 @@
 [ext_resource path="res://scenes/characters/ai/Conditions.gd" type="Script" id=13]
 [ext_resource path="res://scenes/characters/ai/Actions.gd" type="Script" id=14]
 [ext_resource path="res://scenes/characters/CharacterMemory.gd" type="Script" id=15]
+[ext_resource path="res://scenes/characters/ai/needs/Recreation.gd" type="Script" id=17]
+[ext_resource path="res://scenes/characters/ai/needs/Safety.gd" type="Script" id=18]
+[ext_resource path="res://scenes/characters/ai/needs/Health.gd" type="Script" id=19]
+[ext_resource path="res://scenes/characters/ai/Planner.gd" type="Script" id=20]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 4.0
@@ -31,7 +35,7 @@ radius = 8.0
 height = 8.0
 
 [node name="Character" type="KinematicBody2D"]
-collision_layer = 2
+collision_layer = 6
 collision_mask = 2
 script = ExtResource( 1 )
 
@@ -41,10 +45,25 @@ shape = SubResource( 1 )
 [node name="AI" type="Node2D" parent="."]
 script = ExtResource( 6 )
 
-[node name="Conditions" type="Node" parent="AI"]
+[node name="Needs" type="Node" parent="AI"]
+
+[node name="Recreation" type="Node" parent="AI/Needs"]
+script = ExtResource( 17 )
+initial_score = 0.4
+
+[node name="Safety" type="Node" parent="AI/Needs"]
+script = ExtResource( 18 )
+
+[node name="Health" type="Node" parent="AI/Needs"]
+script = ExtResource( 19 )
+
+[node name="Planner" type="Node" parent="AI"]
+script = ExtResource( 20 )
+
+[node name="Conditions" type="Node" parent="AI/Planner"]
 script = ExtResource( 13 )
 
-[node name="Actions" type="Node" parent="AI"]
+[node name="Actions" type="Node" parent="AI/Planner"]
 script = ExtResource( 14 )
 
 [node name="Memory" type="Node2D" parent="AI"]
@@ -57,7 +76,7 @@ script = ExtResource( 9 )
 input_pickable = false
 monitorable = false
 collision_layer = 0
-collision_mask = 26
+collision_mask = 28
 
 [node name="Circle" type="CollisionShape2D" parent="Sensors/Sight"]
 shape = SubResource( 2 )
@@ -108,7 +127,7 @@ shape = SubResource( 3 )
 
 [node name="HitBox" type="Area2D" parent="."]
 input_pickable = false
-collision_layer = 4
+collision_layer = 32
 collision_mask = 0
 
 [node name="Circle" type="CollisionShape2D" parent="HitBox"]
@@ -283,7 +302,6 @@ __meta__ = {
 margin_right = 278.0
 margin_bottom = 275.0
 size_flags_vertical = 1
-custom_styles/normal = ExtResource( 8 )
 text = "DEBUG INFO"
 __meta__ = {
 "_edit_use_anchors_": false
