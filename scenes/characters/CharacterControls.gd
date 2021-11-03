@@ -85,7 +85,7 @@ master func receive_command(command):
 					var item_id = null
 					if "item_id" in command:
 						item_id = str(command.item_id)
-					else:
+					elif command.index < body.inventory.get_child_count():
 						var item = body.inventory.get_child(command.index)
 						item_id = str(item.id) if item else null					
 					body.inventory.rpc("equip", item_id)

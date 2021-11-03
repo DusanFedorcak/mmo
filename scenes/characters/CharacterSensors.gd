@@ -56,14 +56,14 @@ func _update_senses():
 		if other_body is Effect and other_body.from_id != body.id:
 			effects[other_body.id] = Record.new(other_body, direction, angle)
 			
-	objects = objects_map.values()	
+	objects = objects_map.values()
 	objects.sort_custom(Record, "_sort")			
 		
 	items.clear()
 	characters.clear()
 	
-	for obj in objects:
-		if obj is Character:
+	for obj in objects:		
+		if obj.body is Character:
 			characters.append(obj)
 		else:
 			items.append(obj)

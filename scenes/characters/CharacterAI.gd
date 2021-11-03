@@ -68,6 +68,7 @@ func dump_debug_info():
 		
 		ai_dump = (
 			"needs: (%s)\n" % needs_scores.join(", ") +
+			"--- HIGHEST NEED ---\n" +
 			(_last_need.dump_debug_info() if _last_need else "NO SUCESSFULL NEED EXECUTION!")			
 		)
 	

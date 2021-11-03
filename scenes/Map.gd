@@ -11,6 +11,8 @@ func _ready():
 	EventBus.connect("item_dropped", self, "_on_item_dropped")
 	EventBus.connect("fx_created", self, "_on_fx_created")
 	
+	$ParallaxBackground/ParallaxLayer.visible = true	
+	
 
 func _process(delta):
 	if Network.is_server:		
@@ -31,7 +33,7 @@ func _process(delta):
 	
 
 func setup_for_server():	
-	$Navigation.init_navigation($Terrain, $Roads, $Obstacles)	
+	$Navigation.init_navigation($Terrain, $Roads, $Obstacles, $MovementObstacles)	
 
 	for existing in $Items.get_children():
 		rpc("add_item", existing.dump_info())	

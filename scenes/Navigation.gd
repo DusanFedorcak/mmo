@@ -6,7 +6,7 @@ var cell_size = null
 var map_dim = null
 
 
-func init_navigation(terrain: TileMap, roads: TileMap, obstacles: TileMap):				
+func init_navigation(terrain: TileMap, roads: TileMap, obstacles: TileMap, mov_obstacles: TileMap):				
 	map_dim = terrain.get_used_rect()
 	cell_size = terrain.cell_size
 	
@@ -33,10 +33,11 @@ func init_navigation(terrain: TileMap, roads: TileMap, obstacles: TileMap):
 		occupied_cells.append(get_intersecting_cells(tile_index, cell_size, obstacles.tile_set))
 	
 	#then, iterate through the map and remove all map cells that are occupied by an obstacle
-	for cell_pos in obstacles.get_used_cells():
-		var cell_index = obstacles.get_cell(cell_pos.x, cell_pos.y)				
-		for c in occupied_cells[cell_index]:
-			access_map.erase(cell_pos + c)		
+	for tile_map in [obstacles, mov_obstacles]:
+		for cell_pos in tile_map.get_used_cells():
+			var cell_index = tile_map.get_cell(cell_pos.x, cell_pos.y)				
+			for c in occupied_cells[cell_index]:
+				access_map.erase(cell_pos + c)		
 			
 						
 	a_star = AStar2D.new()

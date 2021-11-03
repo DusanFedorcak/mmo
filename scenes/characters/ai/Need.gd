@@ -31,8 +31,7 @@ func dump_debug_info():
 			_act_str.append(Action.pretty_print(a))		
 		plan_str = "--- CURRENT PLAN ---\n%s\n" % _act_str.join("\n")		
 	
-	return (		
-		"--- NEED ---\n" +
+	return (				
 		"name: %s\n" % name +
 		"has_plan: %s\n" % ("yes" if plan else "no") +
 		plan_str
