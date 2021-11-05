@@ -52,7 +52,9 @@ func _ready():
 	name = str(id)
 	$UI/TopPanel.visible = false
 	$Picker.set_meta("body", self)
-	$CollisionShape.disabled = not Network.is_server
+	#disable client side collisions (but leave it exist in collision layer for detection purposes)
+	if Network.is_server:
+		set_collision_mask_bit(1, false)	
 	$Icons/Speaking.visible = false
 	color = Assets.get_random_color()
 	$Icons/Speaking.modulate = color

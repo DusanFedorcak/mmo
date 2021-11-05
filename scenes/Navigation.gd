@@ -24,16 +24,16 @@ func init_navigation(terrain: TileMap, roads: TileMap, obstacles: TileMap, mov_o
 	
 	# reduce the cost of tiles when a road is on them
 	for cell_pos in roads.get_used_cells():
-		access_map[cell_pos] = 1.0
+		access_map[cell_pos] = 1.0	
 	
-	# remove all tiles with some obstacle on them
-	# first get all accupied cells for all obstacle tile types
-	var occupied_cells = []
-	for tile_index in obstacles.tile_set.get_tiles_ids():
-		occupied_cells.append(get_intersecting_cells(tile_index, cell_size, obstacles.tile_set))
-	
-	#then, iterate through the map and remove all map cells that are occupied by an obstacle
+	# remove all tiles with some obstacle on them	
 	for tile_map in [obstacles, mov_obstacles]:
+		# first get all accupied cells for all obstacle tile types		
+		var occupied_cells = {}		
+		for tile_index in tile_map.tile_set.get_tiles_ids():
+			occupied_cells[tile_index] = get_intersecting_cells(tile_index, cell_size, tile_map.tile_set)
+		
+		#then, iterate through the map and remove all map cells that are occupied by an obstacle		
 		for cell_pos in tile_map.get_used_cells():
 			var cell_index = tile_map.get_cell(cell_pos.x, cell_pos.y)				
 			for c in occupied_cells[cell_index]:
@@ -120,9 +120,9 @@ func get_intersecting_cells(tile_index: int, cell_size: Vector2, tile_set: TileS
 		var cell_shape = RectangleShape2D.new()		
 		cell_shape.extents = cell_size * 0.49
 		var cell_transform = Transform2D(0, (cell + Vector2(0.5, 0.5)) * cell_size)
-		var shape_transform = Transform2D(0, tile_set.tile_get_texture_offset(tile_index))
-		for i in tile_set.tile_get_shape_count(tile_index):						
-			if tile_set.tile_get_shape(tile_index, i).collide(shape_transform, cell_shape, cell_transform):
+		#var shape_transform = Transform2D(0, tile_set.tile_get_texture_offset(tile_index))		
+		for tile_shape in tile_set.tile_get_shapes(tile_index):					
+			if tile_shape.shape.collide(tile_shape.shape_transform, cell_shape, cell_transform):
 				colliding_cells.append(cell)
 			
 	return colliding_cells

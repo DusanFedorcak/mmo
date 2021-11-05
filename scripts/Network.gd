@@ -48,7 +48,7 @@ func create_server(port):
 
 func disconnect_network():	
 	if Network.is_connected:
-		switch_signals(false,Network.is_server)						
+		switch_signals(false, Network.is_server)						
 		
 	get_tree().network_peer = null
 	is_server = false		
